@@ -6,6 +6,7 @@
 #include <QSerialPortInfo>
 
 #include "ports/gui_builders/portguibuilder.h"
+#include "ports/port_settings/comport_settings.h"
 
 class ComPortGuiBuilder : public PortGuiBuilder
 {
@@ -54,7 +55,9 @@ public:
 
     virtual PortSettingsPointer getSettings()
     {
-
+        return std::dynamic_pointer_cast<PortSettings>(
+                    std::make_shared<ComPortSettings>( getName(), getSpeed() )
+                    );
     }
 
     virtual void buildForm()
