@@ -6,7 +6,7 @@
 #include <QList>
 #include <QPair>
 
-#include "interface.h"
+#include "parser/interface.h"
 #include "portdatasorter.h"
 
 class DataHolder : public QObject

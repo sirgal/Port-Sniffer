@@ -46,12 +46,23 @@ HEADERS  += mainwindow.h \
     ports/port_settings/port_settings.h \
     channels/channel_factory.h \
     ports/port_factory.h \
-    channels/channel_settings.h
+    channels/channel_settings.h \
+    parser/testcases.h \
+    parser/interface.h \
+    parser/actions/triggeraction.h \
+    parser/actions/receiveaction.h \
+    parser/actions/dropaction.h \
+    parser/actions/countingaction.h \
+    parser/actions/action_enums.h \
+    parser/actions/action.h \
+    parser/algorithms/streamkmp.h \
+    parser/algorithms/parserexceptions.h \
+    parser/algorithms/parser.h \
+    parser/algorithms/algorithms_header.h \
+    parser/containers/strongaction.h \
+    parser/containers/cycliccontainer.h \
+    parser/containers/container.h \
+    parser/containers/anychannelaction.h \
+    parser/containers/actioncontainer.h
 
 FORMS    += mainwindow.ui
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build/build-port_sniffer_parser-Desktop_Qt_5_1_1_MinGW_32bit-Release/release/ -llibport_sniffer_parser
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build/build-port_sniffer_parser-Desktop_Qt_5_1_1_MinGW_32bit-Debug/debug/ -llibport_sniffer_parser
-
-INCLUDEPATH += $$PWD/../port_sniffer_parser
-DEPENDPATH += $$PWD/../port_sniffer_parser

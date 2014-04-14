@@ -19,7 +19,7 @@
 #include <drawdata.h>
 #include <channels/channel_settings.h>
 
-#include "interface.h"
+#include "parser/interface.h"
 #include "ports/gui_builders/comport_guilbuilder.h"
 
 namespace Ui {
