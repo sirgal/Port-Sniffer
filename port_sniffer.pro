@@ -16,7 +16,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     drawdata.cpp \
     portdatasorter.cpp \
-    paramstringprocessor.cpp \
     ports/port_settings/comport_settings.cpp \
     ports/comport.cpp \
     ports/gui_builders/comport_guilbuilder.cpp \
