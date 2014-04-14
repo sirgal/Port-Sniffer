@@ -37,21 +37,21 @@ public:
 
     }
 
-    virtual const settings_type& getSettings()
+    virtual settings_type& getSettings()
     {
         return settings;
     }
 
-    virtual void setSettings( const PortSettings& in_settings )
+    virtual void setSettings( PortSettings& in_settings )
     {
         try {
-            settings = dynamic_cast<const settings_type&>( in_settings );
+            settings = dynamic_cast<settings_type&>( in_settings );
         } catch(...) {
             throw;
         }
     }
 
-    virtual PortTypes getPortType() const
+    virtual PortTypes getPortType()
     {
         return PortTypes::EmulatedPort;
     }

@@ -38,15 +38,15 @@ void ComPort::disable()
     com_port.close();
 }
 
-const ComPort::settings_type &ComPort::getSettings()
+ComPort::settings_type &ComPort::getSettings()
 {
     return settings;
 }
 
-void ComPort::setSettings(const PortSettings &in_settings)
+void ComPort::setSettings( PortSettings &in_settings )
 {
     try {
-        settings = dynamic_cast<const settings_type&>( in_settings );
+        settings = dynamic_cast<settings_type&>( in_settings );
     } catch(...) {
         throw;
     }
@@ -55,7 +55,7 @@ void ComPort::setSettings(const PortSettings &in_settings)
     com_port.setPortName( settings.getName() );
 }
 
-PortTypes ComPort::getPortType() const
+PortTypes ComPort::getPortType()
 {
     return PortTypes::ComPort;
 }

@@ -1,26 +1,20 @@
 #ifndef EMULATEDPORT_SETTINGS_H
 #define EMULATEDPORT_SETTINGS_H
 
-#include "ports/port_settings/portsettings.h"
+#include "ports/port_settings/port_settings.h"
 
 class EmulatedPort;
 
 class EmulatedPortSettings : public PortSettings
 {
 public:
-    EmulatedPortSettings& operator=( const EmulatedPortSettings &port )
-    {
-        setName( port.getName() );
-        return *this;
-    }
-
     EmulatedPortSettings& operator=( EmulatedPortSettings &port )
     {
         setName( port.getName() );
         return *this;
     }
 
-    PortTypes getPortType() const
+    PortTypes getPortType()
     {
         return PortTypes::EmulatedPort;
     }

@@ -4,6 +4,11 @@ PortDataSorter::~PortDataSorter()
 {
 }
 
+void PortDataSorter::start()
+{
+    timer.start();
+}
+
 void PortDataSorter::byteReceived(char byte)
 {
     Channel* channel = qobject_cast<Channel*>( QObject::sender() );

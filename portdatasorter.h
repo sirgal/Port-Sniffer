@@ -29,10 +29,7 @@ public:
     PortDataSorter() { }
     ~PortDataSorter();
 
-    void start()
-    {
-        timer.start();
-    }
+    void start();
 };
 
 #endif // PORTDATASORTER_H

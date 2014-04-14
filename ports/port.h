@@ -16,7 +16,7 @@ class PortSettings;
 
 using PortPointer = std::shared_ptr<Port>;
 
-#include "ports/port_settings/portsettings.h"
+#include "ports/port_settings/port_settings.h"
 
 using PortSettingsPointer = std::shared_ptr<PortSettings>;
 
@@ -36,9 +36,9 @@ public:
 
     virtual void enable() = 0;
     virtual void disable() = 0;
-    virtual const settings_type& getSettings() = 0;
-    virtual void setSettings( const PortSettings& in_settings ) = 0;
-    virtual PortTypes getPortType() const = 0;
+    virtual settings_type& getSettings() = 0;
+    virtual void setSettings( PortSettings& in_settings ) = 0;
+    virtual PortTypes getPortType() = 0;
 };
 
 #endif // PORT_H

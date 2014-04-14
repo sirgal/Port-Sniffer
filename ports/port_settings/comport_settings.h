@@ -1,11 +1,12 @@
 #ifndef COMPORT_SETTINGS_H
 #define COMPORT_SETTINGS_H
 
-#include "ports/port_settings/portsettings.h"
+#include "ports/port_settings/port_settings.h"
 
 class ComPortSettings : public PortSettings
 {
     int baud_rate;
+
 public:
     ComPortSettings( QString name, int baud_rate ) :
         PortSettings(name),
@@ -17,21 +18,12 @@ public:
         baud_rate(port.baud_rate)
     { }
 
-    ComPortSettings( const ComPortSettings &port ) :
-        PortSettings(port.getName()),
-        baud_rate(port.baud_rate)
-    { }
-
-    ComPortSettings &operator=( const ComPortSettings &port );
-
     ComPortSettings &operator=( ComPortSettings &port );
 
     int getBaudRate() const;
-
     void setBaudRate(int value);
 
-    PortTypes getPortType() const;
-
+    PortTypes getPortType();
     PortPointer buildAccordingPort();
 };
 

@@ -17,30 +17,36 @@ SOURCES += main.cpp\
     drawdata.cpp \
     portdatasorter.cpp \
     paramstringprocessor.cpp \
-    lineeditwithfocussignals.cpp \
     ports/port_settings/comport_settings.cpp \
-    ports/comport.cpp
+    ports/comport.cpp \
+    ports/gui_builders/comport_guilbuilder.cpp \
+    ports/gui_builders/port_guibuilder.cpp \
+    ports/port_factory.cpp \
+    channels/channel.cpp \
+    channels/channel_factory.cpp \
+    channels/channel_settings.cpp \
+    ports/port_settings/port_settings.cpp
 
 HEADERS  += mainwindow.h \
     drawdata.h \
     portdatasorter.h \
     paramstringprocessor.h \
     selfresizinglabel.h \
-    channels/channelsettings.h \
     lineeditwithfocussignals.h \
     dataholder.h \
     ports/port.h \
     ports/comport.h \
     ports/emulatedport.h \
     channels/channel.h \
-    channels/channelfactory.h \
-    ports/portfactory.h \
-    ports/port_settings/portsettings.h \
     ports/port_settings/comport_settings.h \
     ports/port_settings/emulatedport_settings.h \
-    ports/gui_builders/comportguilbuilder.h \
-    ports/gui_builders/emulatedportguibuilder.h \
-    ports/gui_builders/portguibuilder.h
+    ports/gui_builders/comport_guilbuilder.h \
+    ports/gui_builders/emulatedport_guibuilder.h \
+    ports/gui_builders/port_guibuilder.h \
+    ports/port_settings/port_settings.h \
+    channels/channel_factory.h \
+    ports/port_factory.h \
+    channels/channel_settings.h
 
 FORMS    += mainwindow.ui
 

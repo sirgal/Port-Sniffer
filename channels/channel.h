@@ -4,7 +4,7 @@
 #include <QObject>
 
 #include "ports/port.h"
-#include "channels/channelsettings.h"
+#include "channels/channel_settings.h"
 
 class Channel : public QObject
 {
@@ -14,10 +14,7 @@ class Channel : public QObject
     ChannelSettings settings;
 
 public slots:
-    void byteReceived( char byte )
-    {
-        emit gotByte(byte);
-    }
+    void byteReceived( char byte );
 
 signals:
     void gotByte( char byte );
@@ -31,34 +28,13 @@ public:
     ~Channel()
     { }
 
-    ChannelSettings& getSettings()
-    {
-        return settings;
-    }
+    ChannelSettings& getSettings();
+    void setSettings(const ChannelSettings &value);
 
-    void setSettings(const ChannelSettings &value)
-    {
-        settings = value;
-    }
+    PortPointer getPort();
 
-    PortPointer getPort()
-    {
-        return port;
-    }
-
-    void start()
-    {
-        try {
-            port->enable();
-        } catch( QString &error_string ) {
-            throw;
-        }
-    }
-
-    void stop()
-    {
-        port->disable();
-    }
+    void start();
+    void stop();
 };
 
 #endif // CHANNEL_H

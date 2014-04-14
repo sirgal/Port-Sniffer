@@ -1,14 +1,12 @@
 #ifndef PORTGUIBUILDER_H
 #define PORTGUIBUILDER_H
 
-#include <QObject>
 #include <QFormLayout>
 
-#include "ports/port_settings/portsettings.h"
+#include "ports/port_settings/port_settings.h"
 
-class PortGuiBuilder : public QObject
+class PortGuiBuilder
 {
-    Q_OBJECT
 protected:
     QFormLayout *layout;
 
@@ -17,15 +15,13 @@ protected:
         while( layout->layout()->count() != 0 )
             layout->takeAt(0);
     }
-public slots:
-
-signals:
 
 public:
     PortGuiBuilder( QFormLayout *layout ) :
         layout(layout)
     { }
 
+    virtual void setSettings( PortSettingsPointer settings ) = 0;
     virtual PortSettingsPointer getSettings() = 0;
     virtual void buildForm() = 0;
 };

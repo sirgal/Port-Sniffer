@@ -17,10 +17,10 @@
 
 #include <portdatasorter.h>
 #include <drawdata.h>
-#include <channels/channelsettings.h>
+#include <channels/channel_settings.h>
 
 #include "interface.h"
-#include "ports/gui_builders/comportguilbuilder.h"
+#include "ports/gui_builders/comport_guilbuilder.h"
 
 namespace Ui {
 class MainWindow;

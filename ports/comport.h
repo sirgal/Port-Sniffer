@@ -32,10 +32,10 @@ public:
     virtual void enable();
     virtual void disable();
 
-    virtual const settings_type& getSettings();
-    virtual void setSettings( const PortSettings& in_settings );
+    virtual settings_type& getSettings();
+    virtual void setSettings(PortSettings &in_settings );
 
-    virtual PortTypes getPortType() const;
+    virtual PortTypes getPortType();
 };
 
 #endif // COMPORT_H

@@ -6,18 +6,28 @@
 class LineEditWithFocusSignals : public QLineEdit
 {
     Q_OBJECT
+
 public:
-    explicit LineEditWithFocusSignals(QWidget *parent = 0);
+    explicit LineEditWithFocusSignals(QWidget *parent = 0) :
+        QLineEdit(parent)
+    { }
 
 signals:
     void lostFocus();
     void gotFocus();
 
-public slots:
-
 protected:
-    virtual void focusInEvent(QFocusEvent *e);
-    virtual void focusOutEvent(QFocusEvent *e);
+    virtual void focusInEvent(QFocusEvent *e)
+    {
+        QLineEdit::focusInEvent(e);
+        emit gotFocus();
+    }
+
+    virtual void focusOutEvent(QFocusEvent *e)
+    {
+        QLineEdit::focusOutEvent(e);
+        emit lostFocus();
+    }
 };
 
 #endif // LINEEDITWITHFOCUSSIGNALS_H
