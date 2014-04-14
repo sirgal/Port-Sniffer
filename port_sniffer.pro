@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     drawdata.cpp \
     portdatasorter.cpp \
     paramstringprocessor.cpp \
-    lineeditwithfocussignals.cpp
+    lineeditwithfocussignals.cpp \
+    ports/port_settings/comport_settings.cpp \
+    ports/comport.cpp
 
 HEADERS  += mainwindow.h \
     drawdata.h \

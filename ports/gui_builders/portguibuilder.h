@@ -12,6 +12,11 @@ class PortGuiBuilder : public QObject
 protected:
     QFormLayout *layout;
 
+    void cleanLayout()
+    {
+        while( layout->layout()->count() != 0 )
+            layout->takeAt(0);
+    }
 public slots:
 
 signals:

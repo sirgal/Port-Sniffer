@@ -12,10 +12,12 @@ enum class PortTypes
 };
 
 class Port;
+class PortSettings;
 
 using PortPointer = std::shared_ptr<Port>;
 
 #include "ports/port_settings/portsettings.h"
+
 using PortSettingsPointer = std::shared_ptr<PortSettings>;
 
 class Port : public QObject

@@ -9,7 +9,7 @@
 #include "interface.h"
 #include "portdatasorter.h"
 
-class DataHolder
+class DataHolder : public QObject
 {
     Q_OBJECT
 

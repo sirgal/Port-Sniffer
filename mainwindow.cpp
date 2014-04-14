@@ -49,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->preprocessedParseEditLabel->hide();
     ui->preprocessedParseEdit->hide();
+
+    guibuilder = new ComPortGuiBuilder( ui->portSettingsForm );
 }
 
 MainWindow::~MainWindow()
@@ -77,6 +79,10 @@ void MainWindow::openChannel(QListWidgetItem* list_item)
 
 void MainWindow::addChannel()
 {
+    ui->channelSettings->show();
+
+    guibuilder->buildForm();
+    ui->portTypeLayout->setAlignment( ui->portSettingsForm->alignment() );
 }
 
 void MainWindow::deleteChannel()

@@ -47,8 +47,8 @@ public slots:
 signals:
 
 public:
-    PortGuiBuilder( QFormLayout *layout ) :
-        layout(layout)
+    ComPortGuiBuilder( QFormLayout *layout ) :
+        PortGuiBuilder(layout)
     {
         port_speeds.addItems( available_speeds );
     }
@@ -62,6 +62,8 @@ public:
 
     virtual void buildForm()
     {
+        cleanLayout();
+
         layout->addRow( "Port name: ", &port_name );
         layout->addRow( "Port name: ", &port_speeds );
     }

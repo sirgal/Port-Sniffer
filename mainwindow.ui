@@ -169,15 +169,18 @@
             <number>0</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
+            <layout class="QFormLayout" name="portTypeLayout">
+             <property name="fieldGrowthPolicy">
+              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+             </property>
+             <item row="0" column="0">
               <widget class="QLabel" name="portLabel">
                <property name="text">
                 <string>Port type: </string>
                </property>
               </widget>
              </item>
-             <item>
+             <item row="0" column="1">
               <widget class="QComboBox" name="serialPortsSniffer"/>
              </item>
             </layout>

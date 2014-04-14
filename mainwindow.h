@@ -20,6 +20,7 @@
 #include <channels/channelsettings.h>
 
 #include "interface.h"
+#include "ports/gui_builders/comportguilbuilder.h"
 
 namespace Ui {
 class MainWindow;
@@ -56,6 +57,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     ParserInterface parser;
+    ComPortGuiBuilder *guibuilder;
 
     enum class States { Intermission, Sniffing, Retranslating };
 

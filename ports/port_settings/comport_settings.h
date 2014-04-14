@@ -3,8 +3,6 @@
 
 #include "ports/port_settings/portsettings.h"
 
-class ComPort;
-
 class ComPortSettings : public PortSettings
 {
     int baud_rate;
@@ -24,40 +22,17 @@ public:
         baud_rate(port.baud_rate)
     { }
 
-    ComPortSettings& operator=( const ComPortSettings &port )
-    {
-        setName( port.getName() );
-        baud_rate = port.baud_rate;
-        return *this;
-    }
+    ComPortSettings &operator=( const ComPortSettings &port );
 
-    ComPortSettings& operator=( ComPortSettings &port )
-    {
-        setName( port.getName() );
-        baud_rate = port.baud_rate;
-        return *this;
-    }
+    ComPortSettings &operator=( ComPortSettings &port );
 
-    int getBaudRate() const
-    {
-        return baud_rate;
-    }
+    int getBaudRate() const;
 
-    void setBaudRate(int value)
-    {
-        baud_rate = value;
-    }
+    void setBaudRate(int value);
 
-    PortTypes getPortType() const
-    {
-        return PortTypes::ComPort;
-    }
+    PortTypes getPortType() const;
 
-    PortPointer buildAccordingPort()
-    {
-        return std::dynamic_pointer_cast<Port>(std::make_shared<ComPort>( *this ));
-    }
+    PortPointer buildAccordingPort();
 };
 
 #endif // COMPORT_SETTINGS_H
-
