@@ -54,8 +54,3 @@ void ComPort::setSettings( PortSettings &in_settings )
     com_port.setBaudRate( settings.getBaudRate() );
     com_port.setPortName( settings.getName() );
 }
-
-PortTypes ComPort::getPortType()
-{
-    return PortTypes::ComPort;
-}

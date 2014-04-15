@@ -28,6 +28,8 @@ ChannelPointer ChannelFactory::addChannel(ChannelSettings &settings, PortSetting
     channel_list.append( new_channel );
 
     connect( new_channel.get(), SIGNAL(gotByte(char)), data_sorter, SLOT(byteReceived(char)) );
+
+    return new_channel;
 }
 
 void ChannelFactory::removeChannel(ChannelPointer channel)

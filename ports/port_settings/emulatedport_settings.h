@@ -14,11 +14,6 @@ public:
         return *this;
     }
 
-    PortTypes getPortType()
-    {
-        return PortTypes::EmulatedPort;
-    }
-
     PortPointer buildAccordingPort()
     {
         return std::dynamic_pointer_cast<Port>(std::make_shared<EmulatedPort>( *this ));

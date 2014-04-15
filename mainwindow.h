@@ -20,7 +20,7 @@
 #include <channels/channel_settings.h>
 
 #include "parser/interface.h"
-#include "ports/gui_builders/comport_guilbuilder.h"
+#include "channels/channel_factory.h"
 
 namespace Ui {
 class MainWindow;
@@ -58,6 +58,7 @@ private:
     Ui::MainWindow *ui;
     ParserInterface parser;
     ComPortGuiBuilder *guibuilder;
+    ChannelFactory chan_factory;
 
     enum class States { Intermission, Sniffing, Retranslating };
 
@@ -67,8 +68,8 @@ private:
     int current_channel;
     States state;
 
-    DrawData *drawer;
-    PortDataSorter *sorter;
+    DrawData drawer;
+    PortDataSorter sorter;
 
     QList<ChannelSettings> channel_settings;
     QList<int> deleted_channels;

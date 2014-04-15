@@ -21,8 +21,8 @@ DrawData::DrawData() : channel_count(16), number_base(10)
 
 DrawData::~DrawData()
 {
-    delete disabled_channels;
-    delete channel_colors;
+    delete [] disabled_channels;
+    delete [] channel_colors;
     delete painter;
 }
 

@@ -4,6 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    chan_factory(&sorter),
     max_channels(16)
 {
     ui->setupUi(this);
@@ -15,9 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
                          "57600", "115200", "128000", "256000" };
 
     qsrand( QTime::currentTime().msec() );
-
-    sorter = new PortDataSorter();
-    drawer = new DrawData();
 
     channels = 0;
 
@@ -55,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete drawer;
     delete ui;
 }
 
@@ -63,7 +60,7 @@ void MainWindow::scrollData( int dx )
 {
     last_dx = dx;
     QPixmap *pixmap = new QPixmap( ui->label->size() );
-    drawer->createImage( dx, pixmap );
+    drawer.createImage( dx, pixmap );
     ui->label->setPixmap( *pixmap );
     delete pixmap;
 }
@@ -75,6 +72,8 @@ void MainWindow::labelResized()
 
 void MainWindow::openChannel(QListWidgetItem* list_item)
 {
+    ChannelPointer channel = chan_factory.findChannel( list_item->text().toInt() );
+
 }
 
 void MainWindow::addChannel()
@@ -198,12 +197,12 @@ void MainWindow::stopRetrans()
 
 void MainWindow::addTestData()
 {
-    drawer->clear();
-    drawer->setChannelCount(10);
+    drawer.clear();
+    drawer.setChannelCount(10);
 
     for( int i = 0; i < 65535; i++ ) {
         for( int j = 0; j < (i%5) + 1; j++ )
-            drawer->appendData( i % 10, i % 256 );
+            drawer.appendData( i % 10, i % 256 );
     }
 }
 

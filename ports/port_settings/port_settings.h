@@ -21,7 +21,6 @@ public:
 
     void setName( const QString &value );
 
-    virtual PortTypes getPortType() = 0;
     virtual PortPointer buildAccordingPort() = 0;
 };
 

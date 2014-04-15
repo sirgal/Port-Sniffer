@@ -23,7 +23,6 @@ public:
     int getBaudRate() const;
     void setBaudRate(int value);
 
-    PortTypes getPortType();
     PortPointer buildAccordingPort();
 };
 

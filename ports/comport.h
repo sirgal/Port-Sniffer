@@ -8,6 +8,7 @@
 
 #include "ports/port.h"
 #include "ports/port_settings/comport_settings.h"
+#include "ports/gui_builders/comport_guilbuilder.h"
 
 class ComPort : public Port
 {
@@ -15,6 +16,7 @@ class ComPort : public Port
 
 public:
     using settings_type = ComPortSettings;
+    using gui_builder_type = ComPortGuiBuilder;
 
 private:
     QSerialPort com_port;
@@ -34,8 +36,6 @@ public:
 
     virtual settings_type& getSettings();
     virtual void setSettings(PortSettings &in_settings );
-
-    virtual PortTypes getPortType();
 };
 
 #endif // COMPORT_H

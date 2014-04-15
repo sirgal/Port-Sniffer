@@ -1,4 +1,9 @@
 #ifndef EMULATEDPORTGUIBUILDER_H
 #define EMULATEDPORTGUIBUILDER_H
 
+class EmulatedPortGuiBuilder
+{
+
+};
+
 #endif // EMULATEDPORTGUIBUILDER_H

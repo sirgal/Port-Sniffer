@@ -6,13 +6,9 @@
 #include <QString>
 #include <QObject>
 
-enum class PortTypes
-{
-    ComPort, EmulatedPort
-};
-
 class Port;
 class PortSettings;
+class PortGuiBuilder;
 
 using PortPointer = std::shared_ptr<Port>;
 
@@ -20,11 +16,14 @@ using PortPointer = std::shared_ptr<Port>;
 
 using PortSettingsPointer = std::shared_ptr<PortSettings>;
 
+#include "gui_builders/port_guibuilder.h"
+
 class Port : public QObject
 {
     Q_OBJECT
 public:
     using settings_type = PortSettings;
+    using gui_builder_type = PortGuiBuilder;
 public slots:
     virtual void byteReady() = 0;
     virtual void putByte(char byte) = 0;
@@ -38,7 +37,6 @@ public:
     virtual void disable() = 0;
     virtual settings_type& getSettings() = 0;
     virtual void setSettings( PortSettings& in_settings ) = 0;
-    virtual PortTypes getPortType() = 0;
 };
 
 #endif // PORT_H

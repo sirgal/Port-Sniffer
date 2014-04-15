@@ -3,12 +3,14 @@
 
 #include "ports/port.h"
 #include "port_settings/emulatedport_settings.h"
+#include "gui_builders/emulatedport_guibuilder.h"
 
 class EmulatedPort : public Port
 {
     Q_OBJECT
 public:
     using settings_type = EmulatedPortSettings;
+    using gui_builder_type = EmulatedPortGuiBuilder;
 private:
     settings_type settings;
 public slots:
@@ -49,11 +51,6 @@ public:
         } catch(...) {
             throw;
         }
-    }
-
-    virtual PortTypes getPortType()
-    {
-        return PortTypes::EmulatedPort;
     }
 };
 

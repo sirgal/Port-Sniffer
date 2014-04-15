@@ -1,4 +1,5 @@
 #include "ports/port_settings/comport_settings.h"
+#include "ports/comport.h"  // dependancy-solving hack
 
 ComPortSettings &ComPortSettings::operator=(ComPortSettings &port)
 {
@@ -17,12 +18,6 @@ void ComPortSettings::setBaudRate(int value)
     baud_rate = value;
 }
 
-PortTypes ComPortSettings::getPortType()
-{
-    return PortTypes::ComPort;
-}
-
-#include "ports/comport.h"
 PortPointer ComPortSettings::buildAccordingPort()
 {
     return std::dynamic_pointer_cast<Port>(std::make_shared<ComPort>( *this ));
