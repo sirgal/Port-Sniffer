@@ -15,7 +15,9 @@ class GuiBuilderFactory
     QFormLayout *layout;
     PortGuiBuilderPointer current;
 public:
-    GuiBuilderFactory( QFormLayout *layout );
+    GuiBuilderFactory();
+
+    void setLayout( QFormLayout *layout );
 
     void registerPortType(PortGuiBuilderPointer &builder );
     QStringList getAvailableTypes();

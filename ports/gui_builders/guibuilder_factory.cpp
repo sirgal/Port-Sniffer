@@ -1,8 +1,12 @@
 #include "guibuilder_factory.h"
 
-GuiBuilderFactory::GuiBuilderFactory(QFormLayout *layout) :
-    layout(layout)
+GuiBuilderFactory::GuiBuilderFactory()
 { }
+
+void GuiBuilderFactory::setLayout(QFormLayout *layout)
+{
+    this->layout = layout;
+}
 
 void GuiBuilderFactory::registerPortType( PortGuiBuilderPointer &builder )
 {

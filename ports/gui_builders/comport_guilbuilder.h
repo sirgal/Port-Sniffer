@@ -27,8 +27,7 @@ class ComPortGuiBuilder : public PortGuiBuilder
     QStringList getAvailablePorts();
 
 public:
-    ComPortGuiBuilder()
-    { }
+    ComPortGuiBuilder();
 
     virtual void setSettings( PortSettingsPointer &in_settings );
     virtual PortSettingsPointer getSettings();

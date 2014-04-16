@@ -21,6 +21,11 @@ QStringList ComPortGuiBuilder::getAvailablePorts()
     return string_list;
 }
 
+ComPortGuiBuilder::ComPortGuiBuilder()
+{
+    port_speeds.addItems( available_speeds );
+}
+
 void ComPortGuiBuilder::setSettings( PortSettingsPointer &in_settings )
 {
     std::shared_ptr<ComPortSettings> settings =
@@ -57,7 +62,7 @@ void ComPortGuiBuilder::buildForm( QFormLayout &layout )
     cleanLayout( layout );
 
     layout.addRow( "Port name: ", &port_name );
-    layout.addRow( "Port name: ", &port_speeds );
+    layout.addRow( "Port speed: ", &port_speeds );
 }
 
 QString ComPortGuiBuilder::getTypeName()

@@ -4,7 +4,6 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    gui_factory(ui->portSettingsForm),
     channel_factory(&sorter),
     max_channels(16)
 {
@@ -19,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
     qsrand( QTime::currentTime().msec() );
 
     channels = 0;
-
-    ui->channelSettings->hide();
 
     ui->channelList->setDragEnabled( false );
 
@@ -48,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->preprocessedParseEditLabel->hide();
     ui->preprocessedParseEdit->hide();
 
+    gui_factory.setLayout( ui->portSettingsForm );
     auto ptr = std::dynamic_pointer_cast<PortGuiBuilder>(std::make_shared<ComPortGuiBuilder>());
     gui_factory.registerPortType( ptr );
 
@@ -81,8 +79,6 @@ void MainWindow::openChannel(QListWidgetItem* list_item)
 
 void MainWindow::addChannel()
 {
-    ui->channelSettings->show();
-
     gui_factory.setType( ui->portTypeComboBox->currentText() );
 }
 
