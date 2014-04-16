@@ -4,7 +4,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    chan_factory(&sorter),
+    gui_factory(ui->portSettingsForm),
+    channel_factory(&sorter),
     max_channels(16)
 {
     ui->setupUi(this);
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->channelList->setDragEnabled( false );
 
+    connect( ui->channelList,         SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openChannel(QListWidgetItem*)) );
     connect( ui->horizontalScrollBar, SIGNAL(valueChanged(int)), this, SLOT(scrollData(int)));
     connect( ui->label,               SIGNAL(newSize(QSize)),    this, SLOT(labelResized()) );
     connect( ui->channelEnable,       SIGNAL(toggled(bool)),     this, SLOT(toggleChannel()));
@@ -31,13 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( ui->channelSetColor,     SIGNAL(clicked()),         this, SLOT(setChannelColor()) );
     connect( ui->snifferStart,        SIGNAL(clicked()),         this, SLOT(startSniffingButt()) );
     connect( ui->retrStart,           SIGNAL(clicked()),         this, SLOT(startRetranslatingButt()) );
-    connect( ui->serialPortsSniffer,  SIGNAL(activated(QString)),this, SLOT(channelPortChanged(QString)));
-    connect( ui->parserEditDummy,     SIGNAL(gotFocus()), this, SLOT(dummyParseLineEditClicked()) );
-    connect( ui->channelList,         SIGNAL(itemClicked(QListWidgetItem*)),         this, SLOT(openChannel(QListWidgetItem*)) );
-    //connect( ui->parserEdit,          SIGNAL(lostFocus()), this, SLOT(parseEditorClosed()) );
-    connect( ui->showPreprocessedButt, SIGNAL(clicked()), this, SLOT(showPreprocessed()) );
-    connect( ui->parserSetButt,       SIGNAL(clicked()), this, SLOT(setParser()) );
-    connect( ui->hideParseEditButt, SIGNAL(clicked()), this, SLOT(parseEditorClosed()) );
+    connect( ui->portTypeComboBox,    SIGNAL(activated(QString)),this, SLOT(channelPortChanged(QString)));
+    connect( ui->parserEditDummy,     SIGNAL(gotFocus()),        this, SLOT(dummyParseLineEditClicked()) );
+    connect( ui->showPreprocessedButt,SIGNAL(clicked()),         this, SLOT(showPreprocessed()) );
+    connect( ui->parserSetButt,       SIGNAL(clicked()),         this, SLOT(setParser()) );
+    connect( ui->hideParseEditButt,   SIGNAL(clicked()),         this, SLOT(parseEditorClosed()) );
 
     addTestData();
 
@@ -48,7 +48,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->preprocessedParseEditLabel->hide();
     ui->preprocessedParseEdit->hide();
 
-    guibuilder = new ComPortGuiBuilder( ui->portSettingsForm );
+    auto ptr = std::dynamic_pointer_cast<PortGuiBuilder>(std::make_shared<ComPortGuiBuilder>());
+    gui_factory.registerPortType( ptr );
+
+    ui->portTypeComboBox->addItems( gui_factory.getAvailableTypes() );
 }
 
 MainWindow::~MainWindow()
@@ -72,7 +75,7 @@ void MainWindow::labelResized()
 
 void MainWindow::openChannel(QListWidgetItem* list_item)
 {
-    ChannelPointer channel = chan_factory.findChannel( list_item->text().toInt() );
+    ChannelPointer channel = channel_factory.findChannel( list_item->text().toInt() );
 
 }
 
@@ -80,8 +83,7 @@ void MainWindow::addChannel()
 {
     ui->channelSettings->show();
 
-    guibuilder->buildForm();
-    ui->portTypeLayout->setAlignment( ui->portSettingsForm->alignment() );
+    gui_factory.setType( ui->portTypeComboBox->currentText() );
 }
 
 void MainWindow::deleteChannel()

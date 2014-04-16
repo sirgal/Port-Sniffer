@@ -27,16 +27,14 @@ class ComPortGuiBuilder : public PortGuiBuilder
     QStringList getAvailablePorts();
 
 public:
-    ComPortGuiBuilder( QFormLayout *layout ) :
-        PortGuiBuilder(layout)
-    {
-        port_speeds.addItems( available_speeds );
-    }
+    ComPortGuiBuilder()
+    { }
 
-    virtual void setSettings( PortSettingsPointer in_settings );
+    virtual void setSettings( PortSettingsPointer &in_settings );
     virtual PortSettingsPointer getSettings();
 
-    virtual void buildForm();
+    virtual void buildForm( QFormLayout &layout );
+    virtual QString getTypeName();
 };
 
 #endif // COMPORTGUILBUILDER_H

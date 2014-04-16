@@ -52,6 +52,11 @@ public:
             throw;
         }
     }
+
+    virtual QString getTypeName()
+    {
+        return "Emulated port";
+    }
 };
 
 #endif // EMULATEDPORT_H

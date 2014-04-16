@@ -1,7 +1,5 @@
 #include "ports/gui_builders/comport_guilbuilder.h"
 
-
-
 int ComPortGuiBuilder::getSpeed()
 {
     return port_speeds.currentText().toInt();
@@ -23,7 +21,7 @@ QStringList ComPortGuiBuilder::getAvailablePorts()
     return string_list;
 }
 
-void ComPortGuiBuilder::setSettings(PortSettingsPointer in_settings)
+void ComPortGuiBuilder::setSettings( PortSettingsPointer &in_settings )
 {
     std::shared_ptr<ComPortSettings> settings =
             std::dynamic_pointer_cast<ComPortSettings>(in_settings);
@@ -54,10 +52,15 @@ PortSettingsPointer ComPortGuiBuilder::getSettings()
                 );
 }
 
-void ComPortGuiBuilder::buildForm()
+void ComPortGuiBuilder::buildForm( QFormLayout &layout )
 {
-    cleanLayout();
+    cleanLayout( layout );
 
-    layout->addRow( "Port name: ", &port_name );
-    layout->addRow( "Port name: ", &port_speeds );
+    layout.addRow( "Port name: ", &port_name );
+    layout.addRow( "Port name: ", &port_speeds );
+}
+
+QString ComPortGuiBuilder::getTypeName()
+{
+    return "RS-232 port";
 }

@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     channels/channel.cpp \
     channels/channel_factory.cpp \
     channels/channel_settings.cpp \
-    ports/port_settings/port_settings.cpp
+    ports/port_settings/port_settings.cpp \
+    ports/gui_builders/emulatedport_guibuilder.cpp \
+    ports/gui_builders/guibuilder_factory.cpp
 
 HEADERS  += mainwindow.h \
     drawdata.h \
@@ -62,6 +64,7 @@ HEADERS  += mainwindow.h \
     parser/containers/cycliccontainer.h \
     parser/containers/container.h \
     parser/containers/anychannelaction.h \
-    parser/containers/actioncontainer.h
+    parser/containers/actioncontainer.h \
+    ports/gui_builders/guibuilder_factory.h
 
 FORMS    += mainwindow.ui

@@ -22,6 +22,9 @@
 #include "parser/interface.h"
 #include "channels/channel_factory.h"
 
+#include "ports/gui_builders/comport_guilbuilder.h"
+#include "ports/gui_builders/guibuilder_factory.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -39,7 +42,7 @@ public slots:
     void labelResized();
 
     void addChannel();
-    void openChannel(QListWidgetItem *list_item);
+    void openChannel( QListWidgetItem *list_item );
     void deleteChannel();
     void toggleChannel();
 
@@ -57,8 +60,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     ParserInterface parser;
-    ComPortGuiBuilder *guibuilder;
-    ChannelFactory chan_factory;
+    GuiBuilderFactory gui_factory;
+    ChannelFactory channel_factory;
 
     enum class States { Intermission, Sniffing, Retranslating };
 
