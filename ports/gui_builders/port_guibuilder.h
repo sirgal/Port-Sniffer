@@ -3,7 +3,9 @@
 
 #include <memory>
 
+#include <QPushButton>
 #include <QFormLayout>
+#include <QObject>
 
 #include "ports/port_settings/port_settings.h"
 
@@ -11,8 +13,10 @@ class PortGuiBuilder;
 
 using PortGuiBuilderPointer = std::shared_ptr<PortGuiBuilder>;
 
-class PortGuiBuilder
+class PortGuiBuilder : public QObject
 {
+    Q_OBJECT
+
 protected:
     static void cleanLayout( QFormLayout &layout )
     {
@@ -22,6 +26,8 @@ protected:
 
 public:
     PortGuiBuilder()
+    { }
+    virtual ~PortGuiBuilder()
     { }
 
     virtual void setSettings( PortSettingsPointer &settings ) = 0;

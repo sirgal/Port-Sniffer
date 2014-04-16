@@ -3,6 +3,7 @@
 
 #include <QStringList>
 #include <QComboBox>
+#include <QHBoxLayout>
 #include <QSerialPortInfo>
 
 #include "ports/gui_builders/port_guibuilder.h"
@@ -10,6 +11,8 @@
 
 class ComPortGuiBuilder : public PortGuiBuilder
 {
+    Q_OBJECT
+
     const QStringList available_speeds =
     {
         "2400",  "4800",   "9600",   "14400",
@@ -17,7 +20,9 @@ class ComPortGuiBuilder : public PortGuiBuilder
         "57600", "115200", "128000", "256000"
     };
 
+    QHBoxLayout name_and_button;
     QComboBox port_name;
+    QPushButton rescan_button;
     QComboBox port_speeds;
 
     QSerialPortInfo port_info;
@@ -26,10 +31,14 @@ class ComPortGuiBuilder : public PortGuiBuilder
     QString getName();
     QStringList getAvailablePorts();
 
+public slots:
+    void rescanPorts();
+
 public:
     ComPortGuiBuilder();
+    virtual ~ComPortGuiBuilder() { }
 
-    virtual void setSettings( PortSettingsPointer &in_settings );
+    virtual void setSettings( PortSettingsPointer &settings );
     virtual PortSettingsPointer getSettings();
 
     virtual void buildForm( QFormLayout &layout );

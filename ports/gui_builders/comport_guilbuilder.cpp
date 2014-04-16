@@ -1,5 +1,17 @@
 #include "ports/gui_builders/comport_guilbuilder.h"
 
+ComPortGuiBuilder::ComPortGuiBuilder()
+{
+    port_speeds.addItems( available_speeds );
+
+    rescan_button.setText( "Rescan ports" );
+
+    connect( &rescan_button, SIGNAL(clicked()), this, SLOT(rescanPorts()) );
+
+    name_and_button.addWidget( &port_name );
+    name_and_button.addWidget( &rescan_button );
+}
+
 int ComPortGuiBuilder::getSpeed()
 {
     return port_speeds.currentText().toInt();
@@ -21,9 +33,10 @@ QStringList ComPortGuiBuilder::getAvailablePorts()
     return string_list;
 }
 
-ComPortGuiBuilder::ComPortGuiBuilder()
+void ComPortGuiBuilder::rescanPorts()
 {
-    port_speeds.addItems( available_speeds );
+    port_name.clear();
+    port_name.addItems( getAvailablePorts() );
 }
 
 void ComPortGuiBuilder::setSettings( PortSettingsPointer &in_settings )
@@ -61,7 +74,7 @@ void ComPortGuiBuilder::buildForm( QFormLayout &layout )
 {
     cleanLayout( layout );
 
-    layout.addRow( "Port name: ", &port_name );
+    layout.addRow( "Port name: ", &name_and_button );
     layout.addRow( "Port speed: ", &port_speeds );
 }
 
