@@ -11,11 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     last_dx = 0;
     current_channel = 0;
     state = States::Intermission;
-    available_speeds = { "2400",  "4800",   "9600",   "14400",
-                         "19200", "28800",  "38400",  "56000",
-                         "57600", "115200", "128000", "256000" };
-
-    qsrand( QTime::currentTime().msec() );
 
     channels = 0;
 
@@ -31,9 +26,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( ui->snifferStart,        SIGNAL(clicked()),         this, SLOT(startSniffingButt()) );
     connect( ui->retrStart,           SIGNAL(clicked()),         this, SLOT(startRetranslatingButt()) );
     connect( ui->portTypeComboBox,    SIGNAL(activated(QString)),this, SLOT(channelPortChanged(QString)));
+
     connect( ui->parserEditDummy,     SIGNAL(gotFocus()),        this, SLOT(dummyParseLineEditClicked()) );
+
     connect( ui->showPreprocessedButt,SIGNAL(clicked()),         this, SLOT(showPreprocessed()) );
     connect( ui->parserSetButt,       SIGNAL(clicked()),         this, SLOT(setParser()) );
+    connect( ui->parserSetReparseButt,SIGNAL(clicked()),         this, SLOT(setParserAndReparse()) );
     connect( ui->hideParseEditButt,   SIGNAL(clicked()),         this, SLOT(parseEditorClosed()) );
 
     addTestData();
@@ -46,7 +44,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->preprocessedParseEdit->hide();
 
     gui_factory.setLayout( ui->portSettingsForm );
+
     auto ptr = std::dynamic_pointer_cast<PortGuiBuilder>(std::make_shared<ComPortGuiBuilder>());
+    gui_factory.registerPortType( ptr );
+
+    ptr = std::dynamic_pointer_cast<PortGuiBuilder>(std::make_shared<DummyPortGuiBuilder>());
     gui_factory.registerPortType( ptr );
 
     ui->portTypeComboBox->addItems( gui_factory.getAvailableTypes() );
@@ -79,7 +81,13 @@ void MainWindow::openChannel(QListWidgetItem* list_item)
 
 void MainWindow::addChannel()
 {
-    gui_factory.setType( ui->portTypeComboBox->currentText() );
+    int channel_number = deleted_channels.isEmpty() ? ++channels : deleted_channels.takeFirst();
+
+    auto channel = channel_factory.addChannel( channel_number );
+
+    ui->channelList->addItem( QString::number(channel_number) );
+    QString type_name = channel->getSettings().getPortTypeName();
+    gui_factory.setType( type_name );
 }
 
 void MainWindow::deleteChannel()
@@ -117,15 +125,16 @@ void MainWindow::showPreprocessed()
     ui->preprocessedParseEditLabel->setHidden(!hidden);
 }
 
-void MainWindow::setParser()
+bool MainWindow::setParser()
 {
     QString parse_line = ui->parserEdit->document()->toPlainText();
 
     try {
-        parser.setParserString( parse_line.toStdString() );
-        ui->preprocessedParseEdit->setText( QString(parser.getPreprocessed().data()) );
+        data_holder.setParserProgram( parse_line );
+        ui->preprocessedParseEdit->setText( data_holder.getPreprocessedString() );
+        return true;
     } catch( ExceptionWithPos &e ) {
-        ui->preprocessedParseEdit->setText( QString(parser.getPreprocessed().data()) );
+        ui->preprocessedParseEdit->setText( data_holder.getPreprocessedString() );
 
         QMessageBox::warning( this, "ERROR", QString(e.what()) + ' ' + QString::number(e.position)  );
 
@@ -134,9 +143,16 @@ void MainWindow::setParser()
         cursor.select( QTextCursor::WordUnderCursor );
 
         ui->preprocessedParseEdit->setTextCursor( cursor );
-
         ui->preprocessedParseEdit->setFocus();
+
+        return false;
     }
+}
+
+void MainWindow::setParserAndReparse()
+{
+    if( setParser() )
+        data_holder.reparse();
 }
 
 void MainWindow::startSniffingButt()
@@ -242,25 +258,6 @@ void MainWindow::enableInterface()
 
     ui->retrStart->setText("Start Retranslator");
     ui->snifferStart->setText("Start Sniffer");
-}
-
-QStringList MainWindow::availablePorts()
-{
-    QSerialPortInfo info;
-    QStringList output;
-    foreach( QSerialPortInfo port, info.availablePorts() ) {
-        if( !occupied_ports.contains( port.portName() ) )
-            output.append(port.portName());
-    }
-    return output;
-}
-
-void MainWindow::setColor( QWidget *widget, QColor color )
-{
-    QPalette palette = widget->palette();
-    palette.setColor( QPalette::Background, color );
-    widget->setPalette( palette );
-    widget->setAutoFillBackground( true );
 }
 
 void MainWindow::channelPortChanged( QString new_name )

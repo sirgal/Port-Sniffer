@@ -512,7 +512,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="parserSetAndReparseButt">
+          <widget class="QPushButton" name="parserSetReparseButt">
            <property name="text">
             <string>Set and reparse</string>
            </property>

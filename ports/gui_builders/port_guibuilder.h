@@ -18,11 +18,7 @@ class PortGuiBuilder : public QObject
     Q_OBJECT
 
 protected:
-    static void cleanLayout( QFormLayout &layout )
-    {
-        while( layout.layout()->count() != 0 )
-            layout.takeAt(0);
-    }
+    void cleanLayout( QFormLayout &layout );
 
 public:
     PortGuiBuilder()

@@ -32,6 +32,7 @@ public:
     void setSettings(const ChannelSettings &value);
 
     PortPointer getPort();
+    void setPortSettings( PortSettingsPointer settings );
 
     void start();
     void stop();

@@ -8,6 +8,7 @@
 #include "channels/channel.h"
 #include "ports/port.h"
 #include "ports/port_factory.h"
+#include "ports/dummyport.h"
 
 using ChannelPointer = std::shared_ptr<Channel>;
 
@@ -25,10 +26,10 @@ public:
     { }
 
     void startAll();
-
     void stopAll();
 
-    ChannelPointer addChannel( ChannelSettings &settings, PortSettings &port_settings );
+    ChannelPointer addChannel( int number );
+    ChannelPointer addChannel( int number, PortSettings &port_settings );
     void removeChannel( ChannelPointer channel );
     ChannelPointer findChannel( int number );
 };

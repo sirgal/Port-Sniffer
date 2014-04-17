@@ -10,6 +10,7 @@
 class ChannelSettings
 {
     QColor port_color;
+    QString port_type_name;
     int channel_number;
     bool is_enabled;
 
@@ -29,7 +30,7 @@ public:
     void enable();
     void disable();
 
-    void setColor( const QColor &new_port_color );
+    void setColor( QColor &new_port_color );
     QColor getColor();
 
     int getNumber();
@@ -38,6 +39,8 @@ public:
     bool isDisabled();
 
     static QColor niceRandomColor();
+    QString getPortTypeName();
+    void setPortTypeName( QString &value );
 };
 
 #endif // CHANNELSETTINGS_H

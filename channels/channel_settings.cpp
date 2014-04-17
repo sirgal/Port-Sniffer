@@ -1,8 +1,19 @@
 #include "channels/channel_settings.h"
 
-void ChannelSettings::setColor(const QColor &new_port_color)
+void ChannelSettings::setColor(QColor &new_port_color)
 {
     port_color = new_port_color;
+}
+
+
+QString ChannelSettings::getPortTypeName()
+{
+    return port_type_name;
+}
+
+void ChannelSettings::setPortTypeName(QString &value)
+{
+    port_type_name = value;
 }
 
 void ChannelSettings::enable()

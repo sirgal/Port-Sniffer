@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     channels/channel_settings.cpp \
     ports/port_settings/port_settings.cpp \
     ports/gui_builders/emulatedport_guibuilder.cpp \
-    ports/gui_builders/guibuilder_factory.cpp
+    ports/gui_builders/guibuilder_factory.cpp \
+    ports/port_settings/dummyport_settings.cpp
 
 HEADERS  += mainwindow.h \
     drawdata.h \
@@ -65,6 +66,9 @@ HEADERS  += mainwindow.h \
     parser/containers/container.h \
     parser/containers/anychannelaction.h \
     parser/containers/actioncontainer.h \
-    ports/gui_builders/guibuilder_factory.h
+    ports/gui_builders/guibuilder_factory.h \
+    ports/port_settings/dummyport_settings.h \
+    ports/dummyport.h \
+    ports/gui_builders/dummyport_guibuilder.h
 
 FORMS    += mainwindow.ui

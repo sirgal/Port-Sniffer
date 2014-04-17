@@ -29,7 +29,8 @@ public slots:
     }
 
 public:
-    DataHolder();
+    DataHolder()
+    { }
 
     void reparse()
     {
@@ -64,7 +65,7 @@ public:
 
     QString getPreprocessedString()
     {
-
+        return QString::fromStdString( parser.getPreprocessed() );
     }
 };
 

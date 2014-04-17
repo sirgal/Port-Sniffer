@@ -7,7 +7,6 @@
 #include <QDropEvent>
 #include <QListWidget>
 #include <QtSerialPort/QSerialPortInfo>
-#include <QTime>
 #include <QtAlgorithms>
 #include <QColorDialog>
 #include <QMessageBox>
@@ -23,7 +22,9 @@
 #include "channels/channel_factory.h"
 
 #include "ports/gui_builders/comport_guilbuilder.h"
+#include "ports/gui_builders/dummyport_guibuilder.h"
 #include "ports/gui_builders/guibuilder_factory.h"
+#include "dataholder.h"
 
 namespace Ui {
 class MainWindow;
@@ -56,10 +57,11 @@ public slots:
     void parseEditorClosed();
 
     void showPreprocessed();
-    void setParser();
+    bool setParser();
+    void setParserAndReparse();
 private:
     Ui::MainWindow *ui;
-    ParserInterface parser;
+    DataHolder data_holder;
     GuiBuilderFactory gui_factory;
     ChannelFactory channel_factory;
 
@@ -76,8 +78,6 @@ private:
 
     QList<ChannelSettings> channel_settings;
     QList<int> deleted_channels;
-    QStringList available_speeds;
-    QSet<QString> occupied_ports;
 
     void disableInterface();
     void enableInterface();
@@ -89,9 +89,6 @@ private:
     void stopRetrans();
 
     void addTestData();
-
-    QStringList availablePorts();
-    void setColor( QWidget *widget, QColor color );
 };
 
 #endif // MAINWINDOW_H

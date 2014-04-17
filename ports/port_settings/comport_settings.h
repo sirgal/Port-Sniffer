@@ -8,6 +8,11 @@ class ComPortSettings : public PortSettings
     int baud_rate;
 
 public:
+    ComPortSettings() :
+        PortSettings("INVALID"),
+        baud_rate(9600)
+    { }
+
     ComPortSettings( QString name, int baud_rate ) :
         PortSettings(name),
         baud_rate(baud_rate)

@@ -10,6 +10,10 @@ class PortSettings
     QString name;
 
 public:
+    PortSettings() :
+        name("INVALID")
+    { }
+
     PortSettings( QString name ) :
         name(name)
     { }

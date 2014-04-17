@@ -1,5 +1,6 @@
 #include "ports/port_settings/comport_settings.h"
-#include "ports/comport.h"  // dependancy-solving hack
+// dependancy-solving hack
+#include "ports/comport.h"
 
 ComPortSettings &ComPortSettings::operator=(ComPortSettings &port)
 {
