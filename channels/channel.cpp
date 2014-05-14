@@ -16,21 +16,25 @@ void Channel::setSettings(const ChannelSettings &value)
     settings = value;
 }
 
-PortPointer Channel::getPort()
+PortSettingsPointer Channel::getPortSettings()
 {
-    return port;
+    return port_settings;
 }
 
 void Channel::setPortSettings( PortSettingsPointer settings )
 {
-    port = settings->buildAccordingPort();
+    port_settings = settings;
+    active_port = port_settings->buildAccordingPort();
 }
 
 void Channel::start()
 {
+    if( !active_port )
+        return;
+
     try {
-        port->enable();
-        connect( port.get(), SIGNAL(gotByte(char)), this, SLOT(byteReceived(char)) );
+        active_port->enable();
+        connect( active_port.get(), SIGNAL(gotByte(char)), this, SLOT(byteReceived(char)) );
     } catch( QString &error_string ) {
         throw;
     }
@@ -38,6 +42,9 @@ void Channel::start()
 
 void Channel::stop()
 {
-    port->disable();
-    disconnect( port.get(), SIGNAL(gotByte(char)), this, SLOT(byteReceived(char)) );
+    if( !active_port )
+        return;
+
+    active_port->disable();
+    disconnect( active_port.get(), SIGNAL(gotByte(char)), this, SLOT(byteReceived(char)) );
 }

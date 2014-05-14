@@ -10,7 +10,8 @@ class Channel : public QObject
 {
     Q_OBJECT
 
-    PortPointer port;
+    PortSettingsPointer port_settings = nullptr;
+    PortPointer active_port = nullptr;
     ChannelSettings settings;
 
 public slots:
@@ -20,9 +21,8 @@ signals:
     void gotByte( char byte );
 
 public:
-    Channel( PortPointer &port, ChannelSettings& settings )
-        : port(port),
-          settings(settings)
+    Channel( ChannelSettings& settings )
+        : settings(settings)
     { }
 
     ~Channel()
@@ -31,7 +31,7 @@ public:
     ChannelSettings& getSettings();
     void setSettings(const ChannelSettings &value);
 
-    PortPointer getPort();
+    PortSettingsPointer getPortSettings();
     void setPortSettings( PortSettingsPointer settings );
 
     void start();

@@ -10,6 +10,11 @@ public:
     { }
 
     PortPointer buildAccordingPort();
+
+    static QString getTypeName()
+    {
+        return QString("None");
+    }
 };
 
 #endif // DUMMYPORT_SETTINGS_H

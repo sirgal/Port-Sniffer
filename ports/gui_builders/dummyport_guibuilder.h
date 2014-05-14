@@ -13,6 +13,8 @@ public:
     virtual ~DummyPortGuiBuilder()
     { }
 
+    virtual void setSettings( PortSettings &settings )
+    { Q_UNUSED(settings); }
     virtual void setSettings( PortSettingsPointer &settings )
     { Q_UNUSED(settings); }
     virtual PortSettingsPointer getSettings()
@@ -22,7 +24,7 @@ public:
                     );
     }
 
-    virtual void buildForm( QFormLayout &layout )
+    virtual void buildForm( QFormLayout *layout )
     { cleanLayout(layout); }
     virtual QString getTypeName()
     { return "Select..."; }

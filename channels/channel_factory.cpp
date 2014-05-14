@@ -1,5 +1,28 @@
 #include "channels/channel_factory.h"
 
+PortSettingsPointer ChannelFactory::createDummyPort()
+{
+    return std::dynamic_pointer_cast<PortSettings>( std::make_shared<DummyPortSettings>( ) );
+}
+
+ChannelPointer ChannelFactory::findChannel( int chan_num )
+{
+    foreach( ChannelPointer ch, channel_list ) {
+        if( ch->getSettings().getNumber() == chan_num )
+            return ch;
+    }
+
+    return nullptr;
+}
+
+void ChannelFactory::storeSettings( PortSettingsPointer settings, int chan_num )
+{
+    ChannelPointer channel = findChannel( chan_num );
+
+    if( channel )
+        channel->setPortSettings( settings );
+}
+
 void ChannelFactory::startAll()
 {
     data_sorter->start();
@@ -20,26 +43,13 @@ void ChannelFactory::stopAll()
         ch->stop();
 }
 
-ChannelPointer ChannelFactory::addChannel( int number )
+ChannelPointer ChannelFactory::addChannel( int chan_num )
 {
-    DummyPortSettings dummy_settings;
-    auto& port_settings = dynamic_cast<PortSettings&>( dummy_settings );
-    ChannelSettings channel_settings( number );
+    PortSettingsPointer port_settings = createDummyPort();
+    ChannelSettings channel_settings( chan_num );
 
-    PortPointer port = port_factory.buildPort( port_settings );
-    ChannelPointer new_channel = std::make_shared<Channel>( port, channel_settings );
-
-    channel_list.append( new_channel );
-
-    return new_channel;
-}
-
-ChannelPointer ChannelFactory::addChannel( int number, PortSettings &port_settings )
-{
-    PortPointer port = port_factory.buildPort( port_settings );
-    ChannelSettings channel_settings( number );
-
-    ChannelPointer new_channel = std::make_shared<Channel>( port, channel_settings );
+    ChannelPointer new_channel = std::make_shared<Channel>( channel_settings );
+    new_channel->setPortSettings( port_settings );
     channel_list.append( new_channel );
 
     connect( new_channel.get(), SIGNAL(gotByte(char)), data_sorter, SLOT(byteReceived(char)) );
@@ -47,20 +57,24 @@ ChannelPointer ChannelFactory::addChannel( int number, PortSettings &port_settin
     return new_channel;
 }
 
-void ChannelFactory::removeChannel(ChannelPointer channel)
+void ChannelFactory::removeChannel(int chan_num)
 {
-    channel->stop();
-    channel_list.removeAll( channel );
+    ChannelPointer channel = findChannel( chan_num );
 
-    disconnect( channel.get(), SIGNAL(gotByte(char)), data_sorter, SLOT(byteReceived(char)) );
+    if( channel ) {
+        channel->stop();
+        channel_list.removeAll( channel );
+
+        disconnect( channel.get(), SIGNAL(gotByte(char)), data_sorter, SLOT(byteReceived(char)) );
+    }
 }
 
-ChannelPointer ChannelFactory::findChannel(int number)
+PortSettingsPointer ChannelFactory::getChannelSettings( int chan_num )
 {
-    foreach( ChannelPointer ch, channel_list ) {
-        if( ch->getSettings().getNumber() == number )
-            return ch;
-    }
+    ChannelPointer channel = findChannel( chan_num );
 
-    return nullptr;
+    if( channel )
+        return channel->getPortSettings();
+    else
+        return nullptr;
 }

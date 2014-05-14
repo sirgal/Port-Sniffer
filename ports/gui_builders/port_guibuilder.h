@@ -18,7 +18,7 @@ class PortGuiBuilder : public QObject
     Q_OBJECT
 
 protected:
-    void cleanLayout( QFormLayout &layout );
+    void cleanLayout( QFormLayout *layout );
 
 public:
     PortGuiBuilder()
@@ -26,10 +26,10 @@ public:
     virtual ~PortGuiBuilder()
     { }
 
-    virtual void setSettings( PortSettingsPointer &settings ) = 0;
+    virtual void setSettings( PortSettingsPointer settings ) = 0;
     virtual PortSettingsPointer getSettings() = 0;
 
-    virtual void buildForm( QFormLayout &layout ) = 0;
+    virtual void buildForm( QFormLayout *layout ) = 0;
     virtual QString getTypeName() = 0;
 };
 

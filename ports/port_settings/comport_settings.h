@@ -29,6 +29,11 @@ public:
     void setBaudRate(int value);
 
     PortPointer buildAccordingPort();
+
+    static QString getTypeName()
+    {
+        return QString("COM port");
+    }
 };
 
 #endif // COMPORT_SETTINGS_H

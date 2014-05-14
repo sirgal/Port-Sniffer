@@ -46,6 +46,7 @@ public slots:
     void openChannel( QListWidgetItem *list_item );
     void deleteChannel();
     void toggleChannel();
+    void channelTypeChanged();
 
     void startSniffingButt();
     void startRetranslatingButt();
@@ -62,7 +63,6 @@ public slots:
 private:
     Ui::MainWindow *ui;
     DataHolder data_holder;
-    GuiBuilderFactory gui_factory;
     ChannelFactory channel_factory;
 
     enum class States { Intermission, Sniffing, Retranslating };

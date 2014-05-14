@@ -11,20 +11,25 @@
 
 class GuiBuilderFactory
 {
-    QMap<QString, PortGuiBuilderPointer> type_name_to_builder;
+    QMap<QString, int> type_name_to_idx;
+    QMap<int, PortGuiBuilderPointer> idx_to_builder;
+
     QFormLayout *layout;
-    PortGuiBuilderPointer current;
+    PortGuiBuilderPointer current_builder;
+
 public:
     GuiBuilderFactory();
 
     void setLayout( QFormLayout *layout );
 
-    void registerPortType(PortGuiBuilderPointer &builder );
+    void registerPortType( PortGuiBuilderPointer &builder );
     QStringList getAvailableTypes();
+    int getTypeNameIndex( QString &type_name );
 
-    void setType(QString type_name );
+    void setType( QString type_name );
     QString getType();
 
+    void setSettings( PortSettings &settings );
     void setSettings( PortSettingsPointer &settings );
     PortSettingsPointer getSettings();
 };

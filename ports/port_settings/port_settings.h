@@ -21,6 +21,11 @@ public:
     virtual ~PortSettings()
     { }
 
+    static QString getTypeName()
+    {
+        return QString("This is not possible!");
+    }
+
     QString getName();
 
     void setName( const QString &value );

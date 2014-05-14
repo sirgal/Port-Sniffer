@@ -12,6 +12,30 @@ ComPortGuiBuilder::ComPortGuiBuilder()
     name_and_button.addWidget( &rescan_button );
 }
 
+void ComPortGuiBuilder::setSettings( PortSettings &settings )
+{
+    try {
+        ComPortSettings &com_settings = dynamic_cast<ComPortSettings&>( settings );
+
+        QString name = com_settings.getName();
+        QString baud_rate = QString::number( com_settings.getBaudRate() );
+
+        for( int i = 0; i < port_name.count(); i++ ){
+            if( port_name.itemText(i) == name ){
+                port_name.setCurrentIndex( i );
+                break;
+            }
+        }
+
+        int speed_idx = available_speeds.indexOf( baud_rate );
+
+        if( speed_idx != -1 )
+            port_speeds.setCurrentIndex( speed_idx );
+    } catch(...) {
+        return;
+    }
+}
+
 int ComPortGuiBuilder::getSpeed()
 {
     return port_speeds.currentText().toInt();
@@ -47,20 +71,7 @@ void ComPortGuiBuilder::setSettings( PortSettingsPointer &in_settings )
     if( !settings )
         return;
 
-    QString name = settings->getName();
-    QString baud_rate = QString::number(settings->getBaudRate());
-
-    for( int i = 0; i < port_name.count(); i++ ){
-        if( port_name.itemText(i) == name ){
-            port_name.setCurrentIndex( i );
-            break;
-        }
-    }
-
-    int speed_idx = available_speeds.indexOf( baud_rate );
-
-    if( speed_idx != -1 )
-        port_speeds.setCurrentIndex( speed_idx );
+    setSettings( *settings );
 }
 
 PortSettingsPointer ComPortGuiBuilder::getSettings()
@@ -70,15 +81,15 @@ PortSettingsPointer ComPortGuiBuilder::getSettings()
                 );
 }
 
-void ComPortGuiBuilder::buildForm( QFormLayout &layout )
+void ComPortGuiBuilder::buildForm(QFormLayout *layout )
 {
     cleanLayout( layout );
 
-    layout.addRow( "Port name: ", &name_and_button );
-    layout.addRow( "Port speed: ", &port_speeds );
+    layout->addRow( "Port name: ", &name_and_button );
+    layout->addRow( "Port speed: ", &port_speeds );
 }
 
 QString ComPortGuiBuilder::getTypeName()
 {
-    return "RS-232 port";
+    return ComPortSettings().getTypeName();
 }

@@ -20,14 +20,13 @@ SOURCES += main.cpp\
     ports/comport.cpp \
     ports/gui_builders/comport_guilbuilder.cpp \
     ports/gui_builders/port_guibuilder.cpp \
-    ports/port_factory.cpp \
     channels/channel.cpp \
-    channels/channel_factory.cpp \
     channels/channel_settings.cpp \
     ports/port_settings/port_settings.cpp \
     ports/gui_builders/emulatedport_guibuilder.cpp \
-    ports/gui_builders/guibuilder_factory.cpp \
-    ports/port_settings/dummyport_settings.cpp
+    ports/port_settings/dummyport_settings.cpp \
+    channels/channel_factory.cpp \
+    settingguiwireup.cpp
 
 HEADERS  += mainwindow.h \
     drawdata.h \
@@ -47,7 +46,6 @@ HEADERS  += mainwindow.h \
     ports/gui_builders/port_guibuilder.h \
     ports/port_settings/port_settings.h \
     channels/channel_factory.h \
-    ports/port_factory.h \
     channels/channel_settings.h \
     parser/testcases.h \
     parser/interface.h \
@@ -69,6 +67,7 @@ HEADERS  += mainwindow.h \
     ports/gui_builders/guibuilder_factory.h \
     ports/port_settings/dummyport_settings.h \
     ports/dummyport.h \
-    ports/gui_builders/dummyport_guibuilder.h
+    ports/gui_builders/dummyport_guibuilder.h \
+    settingguiwireup.h
 
 FORMS    += mainwindow.ui

@@ -42,16 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->preprocessedParseEditLabel->hide();
     ui->preprocessedParseEdit->hide();
-
-    gui_factory.setLayout( ui->portSettingsForm );
-
-    auto ptr = std::dynamic_pointer_cast<PortGuiBuilder>(std::make_shared<ComPortGuiBuilder>());
-    gui_factory.registerPortType( ptr );
-
-    ptr = std::dynamic_pointer_cast<PortGuiBuilder>(std::make_shared<DummyPortGuiBuilder>());
-    gui_factory.registerPortType( ptr );
-
-    ui->portTypeComboBox->addItems( gui_factory.getAvailableTypes() );
 }
 
 MainWindow::~MainWindow()
@@ -75,7 +65,6 @@ void MainWindow::labelResized()
 
 void MainWindow::openChannel(QListWidgetItem* list_item)
 {
-    ChannelPointer channel = channel_factory.findChannel( list_item->text().toInt() );
 
 }
 
@@ -86,16 +75,28 @@ void MainWindow::addChannel()
     auto channel = channel_factory.addChannel( channel_number );
 
     ui->channelList->addItem( QString::number(channel_number) );
+    ui->channelList->setCurrentRow( ui->channelList->count() );
+
     QString type_name = channel->getSettings().getPortTypeName();
-    gui_factory.setType( type_name );
+    //gui_factory.setType( type_name );
+    //ui->portTypeComboBox->setCurrentIndex( gui_factory.getTypeNameIndex( type_name ) );
+
+    current_channel = channel_number;
 }
 
 void MainWindow::deleteChannel()
 {
+    int chan_num = ui->channelList->currentItem()->text().toInt();
+    channel_factory.removeChannel( chan_num );
 }
 
 void MainWindow::toggleChannel()
 {
+}
+
+void MainWindow::channelTypeChanged()
+{
+
 }
 
 void MainWindow::dummyParseLineEditClicked()

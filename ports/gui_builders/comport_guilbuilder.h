@@ -38,10 +38,11 @@ public:
     ComPortGuiBuilder();
     virtual ~ComPortGuiBuilder() { }
 
+    virtual void setSettings( PortSettings &settings );
     virtual void setSettings( PortSettingsPointer &settings );
     virtual PortSettingsPointer getSettings();
 
-    virtual void buildForm( QFormLayout &layout );
+    virtual void buildForm( QFormLayout *layout );
     virtual QString getTypeName();
 };
 
