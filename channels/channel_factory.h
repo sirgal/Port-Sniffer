@@ -36,7 +36,9 @@ public:
 
     ChannelPointer addChannel(int chan_num );
     void removeChannel( int chan_num );
-    PortSettingsPointer getChannelSettings( int chan_num );
+    PortSettingsPointer getPortSettings( int chan_num );
+
+    void setEnabledChannel(int chan_num , bool is_enabled);
 };
 
 #endif // CHANNELFACTORY_H

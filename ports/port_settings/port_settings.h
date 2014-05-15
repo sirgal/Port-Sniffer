@@ -21,10 +21,7 @@ public:
     virtual ~PortSettings()
     { }
 
-    static QString getTypeName()
-    {
-        return QString("This is not possible!");
-    }
+    virtual QString getTypeName() = 0;
 
     QString getName();
 

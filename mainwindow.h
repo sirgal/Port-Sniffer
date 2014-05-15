@@ -23,7 +23,9 @@
 
 #include "ports/gui_builders/comport_guilbuilder.h"
 #include "ports/gui_builders/dummyport_guibuilder.h"
-#include "ports/gui_builders/guibuilder_factory.h"
+#include "ports/gui_builders/emulatedport_guibuilder.h"
+
+#include "settingguiwireup.h"
 #include "dataholder.h"
 
 namespace Ui {
@@ -43,10 +45,8 @@ public slots:
     void labelResized();
 
     void addChannel();
-    void openChannel( QListWidgetItem *list_item );
     void deleteChannel();
     void toggleChannel();
-    void channelTypeChanged();
 
     void startSniffingButt();
     void startRetranslatingButt();
@@ -63,21 +63,21 @@ public slots:
 private:
     Ui::MainWindow *ui;
     DataHolder data_holder;
-    ChannelFactory channel_factory;
+    ChannelFactory *channel_factory;
 
     enum class States { Intermission, Sniffing, Retranslating };
 
-    const int max_channels;
-    int last_dx;
-    int channels;
-    int current_channel;
-    States state;
+    const int max_channels = 16;
+    int last_dx = 0;
+    int channels = 0;
+    States state = States::Intermission;
 
     DrawData drawer;
     PortDataSorter sorter;
 
     QList<ChannelSettings> channel_settings;
     QList<int> deleted_channels;
+    QList<PortGuiBuilderPointer> gui_builders;
 
     void disableInterface();
     void enableInterface();

@@ -186,7 +186,10 @@
             </layout>
            </item>
            <item>
-            <layout class="QFormLayout" name="portSettingsForm"/>
+            <widget class="SettingGuiWireup" name="portSettingsForm">
+             <widget class="QWidget" name="page"/>
+             <widget class="QWidget" name="page_2"/>
+            </widget>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -544,6 +547,12 @@
    <class>LineEditWithFocusSignals</class>
    <extends>QLineEdit</extends>
    <header>lineeditwithfocussignals.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SettingGuiWireup</class>
+   <extends>QStackedWidget</extends>
+   <header>settingguiwireup.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

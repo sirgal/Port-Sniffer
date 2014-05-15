@@ -1,12 +1,15 @@
 #ifndef DUMMYPORT_GUIBUILDER_H
 #define DUMMYPORT_GUIBUILDER_H
 
+#include <QLayout>
+
 #include "ports/gui_builders/port_guibuilder.h"
 #include "ports/port_settings/dummyport_settings.h"
 
 class DummyPortGuiBuilder: public PortGuiBuilder
 {
     Q_OBJECT
+
 public:
     DummyPortGuiBuilder()
     { }
@@ -25,9 +28,9 @@ public:
     }
 
     virtual void buildForm( QFormLayout *layout )
-    { cleanLayout(layout); }
+    { Q_UNUSED(layout); }
     virtual QString getTypeName()
-    { return "Select..."; }
+    { return DummyPortSettings().getTypeName(); }
 };
 
 #endif // DUMMYPORT_GUIBUILDER_H

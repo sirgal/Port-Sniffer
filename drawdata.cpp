@@ -87,21 +87,15 @@ void DrawData::swapChannels( uchar a, uchar b )
     channel_map.move( a, b );
 }
 
+void DrawData::setEnabledChannel(int channel, bool is_enabled)
+{
+    if( channel < channel_count )
+        disabled_channels[channel] = is_enabled;
+}
+
 int DrawData::maxChannels()
 {
     return channel_count;
-}
-
-void DrawData::enableChannel(  int channel )
-{
-    if( channel < channel_count )
-        disabled_channels[channel] = false;
-}
-
-void DrawData::disableChannel( int channel )
-{
-    if( channel < channel_count )
-        disabled_channels[channel] = true;
 }
 
 // false - failed to draw

@@ -1,29 +1,13 @@
 #include "channels/channel_settings.h"
 
+void ChannelSettings::setEnabled(bool is_enabled)
+{
+    this->is_enabled = is_enabled;
+}
+
 void ChannelSettings::setColor(QColor &new_port_color)
 {
     port_color = new_port_color;
-}
-
-
-QString ChannelSettings::getPortTypeName()
-{
-    return port_type_name;
-}
-
-void ChannelSettings::setPortTypeName(QString &value)
-{
-    port_type_name = value;
-}
-
-void ChannelSettings::enable()
-{
-    is_enabled = true;
-}
-
-void ChannelSettings::disable()
-{
-    is_enabled = false;
 }
 
 QColor ChannelSettings::getColor()
@@ -39,11 +23,6 @@ int ChannelSettings::getNumber()
 bool ChannelSettings::isEnabled()
 {
     return is_enabled;
-}
-
-bool ChannelSettings::isDisabled()
-{
-    return !is_enabled;
 }
 
 QColor ChannelSettings::niceRandomColor()

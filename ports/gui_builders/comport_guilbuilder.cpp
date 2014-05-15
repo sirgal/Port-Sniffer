@@ -81,10 +81,8 @@ PortSettingsPointer ComPortGuiBuilder::getSettings()
                 );
 }
 
-void ComPortGuiBuilder::buildForm(QFormLayout *layout )
+void ComPortGuiBuilder::buildForm(QFormLayout *layout)
 {
-    cleanLayout( layout );
-
     layout->addRow( "Port name: ", &name_and_button );
     layout->addRow( "Port speed: ", &port_speeds );
 }

@@ -31,8 +31,7 @@ public:
     void setChannelColor( uchar channel, QColor color );
     void swapChannels( uchar a, uchar b );
 
-    void enableChannel(  int channel );
-    void disableChannel( int channel );
+    void setEnabledChannel(  int channel, bool is_enabled );
 
     bool createImage(int data_start, QPixmap *result );
     int dataAvailable();

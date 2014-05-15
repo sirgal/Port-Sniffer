@@ -69,7 +69,7 @@ void ChannelFactory::removeChannel(int chan_num)
     }
 }
 
-PortSettingsPointer ChannelFactory::getChannelSettings( int chan_num )
+PortSettingsPointer ChannelFactory::getPortSettings( int chan_num )
 {
     ChannelPointer channel = findChannel( chan_num );
 
@@ -77,4 +77,12 @@ PortSettingsPointer ChannelFactory::getChannelSettings( int chan_num )
         return channel->getPortSettings();
     else
         return nullptr;
+}
+
+void ChannelFactory::setEnabledChannel( int chan_num, bool is_enabled )
+{
+    ChannelPointer channel = findChannel( chan_num );
+
+    if( channel )
+        channel->getSettings().setEnabled( is_enabled );
 }

@@ -1,6 +1,7 @@
 #ifndef COMPORTGUILBUILDER_H
 #define COMPORTGUILBUILDER_H
 
+#include <QFormLayout>
 #include <QStringList>
 #include <QComboBox>
 #include <QHBoxLayout>

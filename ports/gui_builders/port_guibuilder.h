@@ -26,7 +26,7 @@ public:
     virtual ~PortGuiBuilder()
     { }
 
-    virtual void setSettings( PortSettingsPointer settings ) = 0;
+    virtual void setSettings( PortSettingsPointer &settings ) = 0;
     virtual PortSettingsPointer getSettings() = 0;
 
     virtual void buildForm( QFormLayout *layout ) = 0;

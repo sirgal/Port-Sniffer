@@ -19,7 +19,7 @@ public:
         return std::dynamic_pointer_cast<Port>(std::make_shared<EmulatedPort>( *this ));
     }
 
-    static QString getTypeName()
+    virtual QString getTypeName()
     {
         return QString("Emulated port");
     }

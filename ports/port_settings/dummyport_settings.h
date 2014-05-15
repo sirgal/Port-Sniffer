@@ -6,14 +6,15 @@
 class DummyPortSettings : public PortSettings
 {
 public:
-    DummyPortSettings()
+    DummyPortSettings() :
+        PortSettings("DUMMY")
     { }
 
     PortPointer buildAccordingPort();
 
-    static QString getTypeName()
+    virtual QString getTypeName()
     {
-        return QString("None");
+        return QString("Select...");
     }
 };
 

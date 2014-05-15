@@ -1,34 +1,69 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    channel_factory(&sorter),
-    max_channels(16)
+MainWindow::MainWindow(QWidget *parent)
+    :
+      QMainWindow(parent),
+      ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    last_dx = 0;
-    current_channel = 0;
-    state = States::Intermission;
-
-    channels = 0;
 
     ui->channelList->setDragEnabled( false );
 
-    connect( ui->channelList,         SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openChannel(QListWidgetItem*)) );
+    channel_factory = new ChannelFactory( &sorter );
+
+    ui->portSettingsForm->registerFriends(
+                ui->portTypeComboBox,
+                ui->channelList,
+                channel_factory
+                );
+
+    gui_builders.append(
+                std::dynamic_pointer_cast<PortGuiBuilder>(
+                    std::make_shared<DummyPortGuiBuilder>()
+                    )
+                );
+    gui_builders.append(
+                std::dynamic_pointer_cast<PortGuiBuilder>(
+                    std::make_shared<ComPortGuiBuilder>()
+                    )
+                );
+
+    foreach( auto builder, gui_builders ) {
+        ui->portSettingsForm->registerPortType( builder );
+    }
+
+    connect( ui->channelList,
+             SIGNAL(currentTextChanged(QString)),
+             ui->portSettingsForm,
+             SLOT(onChannelChange(QString))
+             );
+
+    connect( ui->portTypeComboBox,
+             SIGNAL(currentTextChanged(QString)),
+             ui->portSettingsForm,
+             SLOT(onPortTypeChange(QString))
+             );
+
+    connect( ui->portSettingsForm,
+             SIGNAL(storeSettings(PortSettingsPointer,int)),
+             channel_factory,
+             SLOT(storeSettings(PortSettingsPointer,int))
+             );
+
     connect( ui->horizontalScrollBar, SIGNAL(valueChanged(int)), this, SLOT(scrollData(int)));
     connect( ui->label,               SIGNAL(newSize(QSize)),    this, SLOT(labelResized()) );
-    connect( ui->channelEnable,       SIGNAL(toggled(bool)),     this, SLOT(toggleChannel()));
+
     connect( ui->addChannel,          SIGNAL(clicked()),         this, SLOT(addChannel())   );
     connect( ui->deleteChannel,       SIGNAL(clicked()),         this, SLOT(deleteChannel()));
+
+    connect( ui->channelEnable,       SIGNAL(toggled(bool)),     this, SLOT(toggleChannel()));
     connect( ui->channelSetColor,     SIGNAL(clicked()),         this, SLOT(setChannelColor()) );
+
     connect( ui->snifferStart,        SIGNAL(clicked()),         this, SLOT(startSniffingButt()) );
     connect( ui->retrStart,           SIGNAL(clicked()),         this, SLOT(startRetranslatingButt()) );
-    connect( ui->portTypeComboBox,    SIGNAL(activated(QString)),this, SLOT(channelPortChanged(QString)));
 
     connect( ui->parserEditDummy,     SIGNAL(gotFocus()),        this, SLOT(dummyParseLineEditClicked()) );
-
     connect( ui->showPreprocessedButt,SIGNAL(clicked()),         this, SLOT(showPreprocessed()) );
     connect( ui->parserSetButt,       SIGNAL(clicked()),         this, SLOT(setParser()) );
     connect( ui->parserSetReparseButt,SIGNAL(clicked()),         this, SLOT(setParserAndReparse()) );
@@ -63,40 +98,36 @@ void MainWindow::labelResized()
     scrollData(last_dx);
 }
 
-void MainWindow::openChannel(QListWidgetItem* list_item)
-{
-
-}
-
 void MainWindow::addChannel()
 {
     int channel_number = deleted_channels.isEmpty() ? ++channels : deleted_channels.takeFirst();
 
-    auto channel = channel_factory.addChannel( channel_number );
+    channel_factory->addChannel( channel_number );
 
-    ui->channelList->addItem( QString::number(channel_number) );
-    ui->channelList->setCurrentRow( ui->channelList->count() );
+    QString chan_name = QString::number(channel_number);
 
-    QString type_name = channel->getSettings().getPortTypeName();
-    //gui_factory.setType( type_name );
-    //ui->portTypeComboBox->setCurrentIndex( gui_factory.getTypeNameIndex( type_name ) );
-
-    current_channel = channel_number;
+    ui->channelList->addItem( chan_name );
+    ui->channelList->setCurrentRow( ui->channelList->count()  );
+    ui->channelList->currentTextChanged( chan_name );
 }
 
 void MainWindow::deleteChannel()
 {
-    int chan_num = ui->channelList->currentItem()->text().toInt();
-    channel_factory.removeChannel( chan_num );
+    auto item = ui->channelList->currentItem();
+    int chan_num = item->text().toInt();
+
+    channel_factory->removeChannel( chan_num );
+    ui->channelList->removeItemWidget( item );
+    deleted_channels.append( chan_num );
 }
 
 void MainWindow::toggleChannel()
 {
-}
+    int chan_num = ui->channelList->currentItem()->text().toInt();
+    bool is_enabled = ui->channelEnable->isChecked();
 
-void MainWindow::channelTypeChanged()
-{
-
+    channel_factory->setEnabledChannel( chan_num, is_enabled );
+    drawer.setEnabledChannel( chan_num, is_enabled );
 }
 
 void MainWindow::dummyParseLineEditClicked()
