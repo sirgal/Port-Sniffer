@@ -79,6 +79,34 @@ PortSettingsPointer ChannelFactory::getPortSettings( int chan_num )
         return nullptr;
 }
 
+QColor ChannelFactory::getChannelColor(int chan_num)
+{
+    ChannelPointer channel = findChannel( chan_num );
+
+    if( channel )
+        return channel->getSettings().getColor();
+    else
+        return Qt::black;
+}
+
+void ChannelFactory::setChannelColor(int chan_num, QColor color)
+{
+    ChannelPointer channel = findChannel( chan_num );
+
+    if( channel )
+        channel->getSettings().setColor( color );
+}
+
+bool ChannelFactory::isChannelEnabled(int chan_num)
+{
+    ChannelPointer channel = findChannel( chan_num );
+
+    if( channel )
+        return channel->getSettings().isEnabled();
+    else
+        return false;
+}
+
 void ChannelFactory::setEnabledChannel( int chan_num, bool is_enabled )
 {
     ChannelPointer channel = findChannel( chan_num );

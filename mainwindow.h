@@ -89,6 +89,9 @@ private:
     void stopRetrans();
 
     void addTestData();
+
+    int getCurrentChanNum();
+    void setLabelColor(int chan_num, QLabel *label);
 };
 
 #endif // MAINWINDOW_H

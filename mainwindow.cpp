@@ -51,6 +51,12 @@ MainWindow::MainWindow(QWidget *parent)
              SLOT(storeSettings(PortSettingsPointer,int))
              );
 
+    connect( ui->channelList,
+             SIGNAL(currentTextChanged(QString)),
+             this,
+             SLOT(channelPortChanged(QString))
+             );
+
     connect( ui->horizontalScrollBar, SIGNAL(valueChanged(int)), this, SLOT(scrollData(int)));
     connect( ui->label,               SIGNAL(newSize(QSize)),    this, SLOT(labelResized()) );
 
@@ -77,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->preprocessedParseEditLabel->hide();
     ui->preprocessedParseEdit->hide();
+
+    ui->channelColor->setAutoFillBackground( true );
 }
 
 MainWindow::~MainWindow()
@@ -100,7 +108,7 @@ void MainWindow::labelResized()
 
 void MainWindow::addChannel()
 {
-    int channel_number = deleted_channels.isEmpty() ? ++channels : deleted_channels.takeFirst();
+    int channel_number = deleted_channels.isEmpty() ? channels++ : deleted_channels.takeFirst();
 
     channel_factory->addChannel( channel_number );
 
@@ -113,21 +121,32 @@ void MainWindow::addChannel()
 
 void MainWindow::deleteChannel()
 {
-    auto item = ui->channelList->currentItem();
+    QListWidgetItem *item = ui->channelList->currentItem();
+
+    if( !item )
+        return;
+
     int chan_num = item->text().toInt();
+    int row = ui->channelList->row( item );
 
     channel_factory->removeChannel( chan_num );
-    ui->channelList->removeItemWidget( item );
+    ui->channelList->model()->removeRow( row );
     deleted_channels.append( chan_num );
+    qSort( deleted_channels );
 }
 
 void MainWindow::toggleChannel()
 {
-    int chan_num = ui->channelList->currentItem()->text().toInt();
+    int chan_num = getCurrentChanNum();
+
+    if( chan_num < 0 )
+        return;
+
     bool is_enabled = ui->channelEnable->isChecked();
 
     channel_factory->setEnabledChannel( chan_num, is_enabled );
     drawer.setEnabledChannel( chan_num, is_enabled );
+    scrollData( last_dx );
 }
 
 void MainWindow::dummyParseLineEditClicked()
@@ -252,6 +271,16 @@ void MainWindow::addTestData()
     }
 }
 
+int MainWindow::getCurrentChanNum()
+{
+    QListWidgetItem *item = ui->channelList->currentItem();
+
+    if( !item )
+        return -1;
+    else
+        return item->text().toInt();
+}
+
 void MainWindow::disableInterface()
 {
     const QList<QWidget*> to_disable =
@@ -294,8 +323,38 @@ void MainWindow::enableInterface()
 
 void MainWindow::channelPortChanged( QString new_name )
 {
+    int chan_num = new_name.toInt();
+
+    setLabelColor( chan_num, ui->channelColor );
+
+    bool is_enabled = channel_factory->isChannelEnabled( chan_num );
+    ui->channelEnable->setChecked( is_enabled );
+}
+
+void MainWindow::setLabelColor( int chan_num, QLabel *label )
+{
+    QColor color = channel_factory->getChannelColor( chan_num );
+    QPalette palette = label->palette();
+    palette.setColor( label->backgroundRole(), color );
+    label->setPalette( palette );
 }
 
 void MainWindow::setChannelColor()
 {
+    QColorDialog color_dialog( this );
+    int chan_num = getCurrentChanNum();
+
+    if( chan_num < 0 )
+        return;
+
+    QColor initial = channel_factory->getChannelColor( chan_num );
+    QColor next = color_dialog.getColor( initial, this );
+
+    if( next == initial )
+        return;
+
+    channel_factory->setChannelColor( chan_num, next );
+    setLabelColor( chan_num, ui->channelColor );
+    drawer.setChannelColor( chan_num, next );
+    scrollData( last_dx );
 }

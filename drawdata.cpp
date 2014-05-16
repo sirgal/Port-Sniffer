@@ -90,7 +90,7 @@ void DrawData::swapChannels( uchar a, uchar b )
 void DrawData::setEnabledChannel(int channel, bool is_enabled)
 {
     if( channel < channel_count )
-        disabled_channels[channel] = is_enabled;
+        disabled_channels[channel] = !is_enabled;
 }
 
 int DrawData::maxChannels()

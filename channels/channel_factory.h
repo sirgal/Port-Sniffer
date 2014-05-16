@@ -38,6 +38,9 @@ public:
     void removeChannel( int chan_num );
     PortSettingsPointer getPortSettings( int chan_num );
 
+    QColor getChannelColor(int chan_num);
+    void setChannelColor(int chan_num, QColor color);
+    bool isChannelEnabled(int chan_num);
     void setEnabledChannel(int chan_num , bool is_enabled);
 };
 
