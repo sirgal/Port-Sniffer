@@ -67,6 +67,17 @@ public:
     {
         return QString::fromStdString( parser.getPreprocessed() );
     }
+
+    void clear()
+    {
+        unparsed.clear();
+        parsed.clear();
+    }
+
+    bool isEmpty()
+    {
+        return unparsed.isEmpty();
+    }
 };
 
 #endif // DATAHOLDER_H

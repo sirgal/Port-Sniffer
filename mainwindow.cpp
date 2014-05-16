@@ -244,14 +244,37 @@ void MainWindow::startRetrans()
 
 void MainWindow::startSniffer()
 {
+    if( !data_holder.isEmpty() ) {
+        QMessageBox::StandardButton choice = QMessageBox::question(
+                    this,
+                    "There's data there",
+                    "Overwrite current data?",
+                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
+                    );
+
+        switch( choice ) {
+        case QMessageBox::Yes:
+            data_holder.clear();
+            break;
+        case QMessageBox::No:
+            break;
+        case QMessageBox::Cancel:
+            return;
+        default:
+            return;
+        }
+    }
     state = States::Sniffing;
     disableInterface();
+
+    channel_factory->startAll();
 }
 
 void MainWindow::stopSniffer()
 {
     state = States::Intermission;
     enableInterface();
+    channel_factory->stopAll();
 }
 
 void MainWindow::stopRetrans()

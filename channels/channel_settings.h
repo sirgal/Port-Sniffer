@@ -10,7 +10,7 @@
 class ChannelSettings
 {
     QColor port_color;
-    int channel_number = 0;
+    int channel_number = -1;
     bool is_enabled = true;
 
 public:
