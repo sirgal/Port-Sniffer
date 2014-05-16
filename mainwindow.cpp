@@ -269,10 +269,19 @@ void MainWindow::startSniffer()
             return;
         }
     }
+
     state = States::Sniffing;
     disableInterface();
 
-    channel_factory->startAll();
+    try {
+        channel_factory->startAll();
+    } catch( QString &error_string ) {
+        QMessageBox::critical(
+                    this,
+                    "Failed to open port",
+                    QString("And that's why:\n") + error_string
+                    );
+    }
 }
 
 void MainWindow::stopSniffer()
