@@ -83,13 +83,13 @@ MainWindow::MainWindow(QWidget *parent)
     addTestData();
 
     ui->expandedParserCont->hide();
-
-    scrollData( last_dx );
-
     ui->preprocessedParseEditLabel->hide();
     ui->preprocessedParseEdit->hide();
 
     ui->channelColor->setAutoFillBackground( true );
+
+    scrollData( last_dx );
+
 }
 
 MainWindow::~MainWindow()
@@ -113,11 +113,11 @@ void MainWindow::labelResized()
 
 void MainWindow::addChannel()
 {
-    int channel_number = deleted_channels.isEmpty() ? channels++ : deleted_channels.takeFirst();
+    int chan_num = deleted_channels.isEmpty() ? channels++ : deleted_channels.takeFirst();
 
-    channel_factory->addChannel( channel_number );
+    channel_factory->addChannel( chan_num );
 
-    QString chan_name = QString::number(channel_number);
+    QString chan_name = QString::number(chan_num );
 
     ui->channelList->addItem( chan_name );
     ui->channelList->setCurrentRow( ui->channelList->count()  );
@@ -303,9 +303,14 @@ void MainWindow::addTestData()
     drawer.setChannelCount(10);
 
     for( int i = 0; i < 65535; i++ ) {
-        for( int j = 0; j < (i%5) + 1; j++ )
-            drawer.appendData( i % 10, i % 256 );
+        for( int j = 0; j < (i%5) + 1; j++ ) {
+            channel_data_pair chan_data = { i % 10, i % 256 };
+            timestamped_data data = { chan_data, i };
+            data_holder.receiveByte( data );
+        }
     }
+
+    drawer.setData( data_holder.getUnparsed() );
 }
 
 int MainWindow::getCurrentChanNum()

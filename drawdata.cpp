@@ -51,17 +51,12 @@ void DrawData::changeFont( QFont in_font )
     font_rectangle = QRect( QFontMetrics(font).boundingRect( "00" ) );
 }
 
-void DrawData::setDrawData( QVarLengthArray<QPair<uchar, uchar>, 1024 > data )
+void DrawData::setData( QList<timestamped_data> data )
 {
-    data_list = QVarLengthArray<QPair<uchar, uchar>, 1024 >( data );
+    data_list = data;
 }
 
-void DrawData::appendData( uchar channel, uchar data )
-{
-    appendData( QPair<uchar, uchar>( channel, data ) );
-}
-
-void DrawData::appendData( QPair<uchar, uchar> data )
+void DrawData::appendData( const timestamped_data data )
 {
     data_list.append( data );
 }
@@ -76,13 +71,13 @@ void DrawData::clear()
 }
 
 // false - failed to set color (channel out of range)
-void DrawData::setChannelColor( uchar channel, QColor color )
+void DrawData::setChannelColor( int channel, QColor color )
 {
     if( channel < channel_count )
         channel_colors[channel] = color;
 }
 
-void DrawData::swapChannels( uchar a, uchar b )
+void DrawData::swapChannels( int a, int b )
 {
     channel_map.move( a, b );
 }
@@ -101,8 +96,9 @@ int DrawData::maxChannels()
 // false - failed to draw
 bool DrawData::drawDataToPixmap( int picture_position, int array_index, QPixmap *pixmap )
 {
-    uchar channel = data_list.at( array_index ).first;
-    uchar data    = data_list.at( array_index ).second;
+    channel_data_pair chan_data = data_list.at( array_index ).first;
+    int channel = chan_data.first;
+    int data    = chan_data.second;
 
     // map accordingly to current channel swaps
     channel = channel_map.indexOf( channel );

@@ -9,7 +9,7 @@
 #include "ports/port.h"
 #include "channels/channel.h"
 
-using channel_data_pair = QPair<int, char>;
+using channel_data_pair = QPair<int, int>;
 using timestamped_data = QPair<channel_data_pair, long long int>;
 
 // receives byte from some port, puts it into pair, sends to paramstringprocessor

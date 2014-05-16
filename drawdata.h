@@ -12,24 +12,24 @@
 #include <chrono>
 #include <random>
 
+#include "dataholder.h"
+
 class DrawData
 {
 public:
     DrawData();
     ~DrawData();
 
-    void setDrawData(QVarLengthArray<QPair<uchar, uchar>, 1024> data );
-
-    void appendData( uchar channel, uchar data );
-    void appendData( QPair<uchar, uchar> data );
+    void setData(QList<timestamped_data> data );
+    void appendData(const timestamped_data data );
 
     void changeFont(QFont in_font );
 
     void clear();
     void setNumberBase( int base );
 
-    void setChannelColor( uchar channel, QColor color );
-    void swapChannels( uchar a, uchar b );
+    void setChannelColor( int channel, QColor color );
+    void swapChannels( int a, int b );
 
     void setEnabledChannel(  int channel, bool is_enabled );
 
@@ -53,7 +53,7 @@ private:
     QRect font_rectangle;
     QFont font;
 
-    QVarLengthArray<QPair<uchar, uchar>, 1024> data_list;
+    QList<timestamped_data> data_list;
     QList<int> channel_map;
     QColor *channel_colors;
     bool   *disabled_channels;

@@ -16,8 +16,8 @@ void PortDataSorter::byteReceived(char byte)
     if( !channel )
         return;
 
-    QPair<int, char> pair { channel->getSettings().getNumber(), byte };
-    QPair<QPair<int, char>, long long int> received { pair, timer.nsecsElapsed() };
+    channel_data_pair pair { channel->getSettings().getNumber(), byte };
+    timestamped_data received { pair, timer.nsecsElapsed() };
 
     emit gotByte( received );
 }
