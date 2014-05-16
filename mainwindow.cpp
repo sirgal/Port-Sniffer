@@ -28,6 +28,11 @@ MainWindow::MainWindow(QWidget *parent)
                     std::make_shared<ComPortGuiBuilder>()
                     )
                 );
+    gui_builders.append(
+                std::dynamic_pointer_cast<PortGuiBuilder>(
+                    std::make_shared<EmulatedPortGuiBuilder>()
+                    )
+                );
 
     foreach( auto builder, gui_builders ) {
         ui->portSettingsForm->registerPortType( builder );

@@ -3,26 +3,16 @@
 
 #include "ports/port_settings/port_settings.h"
 
-class EmulatedPort;
-
 class EmulatedPortSettings : public PortSettings
 {
 public:
-    EmulatedPortSettings& operator=( EmulatedPortSettings &port )
-    {
-        setName( port.getName() );
-        return *this;
-    }
+    EmulatedPortSettings &operator=( EmulatedPortSettings &port );
 
-    PortPointer buildAccordingPort()
-    {
-        return std::dynamic_pointer_cast<Port>(std::make_shared<EmulatedPort>( *this ));
-    }
+    PortPointer buildAccordingPort();
 
-    virtual QString getTypeName()
-    {
-        return QString("Emulated port");
-    }
+    virtual QString getTypeName();
 };
+
+
 
 #endif // EMULATEDPORT_SETTINGS_H
