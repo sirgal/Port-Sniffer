@@ -32,6 +32,6 @@ public:
 
     }
     virtual QString getTypeName()
-    { return EmulatedPortSettings().getTypeName(); }
+    { return EmulatedPortSettings::getTypeName(); }
 };
 #endif // EMULATEDPORTGUIBUILDER_H

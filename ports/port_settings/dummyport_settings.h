@@ -12,7 +12,7 @@ public:
 
     PortPointer buildAccordingPort();
 
-    virtual QString getTypeName()
+    static QString getTypeName()
     {
         return QString("Select...");
     }

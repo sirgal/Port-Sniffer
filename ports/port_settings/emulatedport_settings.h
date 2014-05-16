@@ -10,9 +10,7 @@ public:
 
     PortPointer buildAccordingPort();
 
-    virtual QString getTypeName();
+    static QString getTypeName();
 };
-
-
 
 #endif // EMULATEDPORT_SETTINGS_H

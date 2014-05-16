@@ -8,19 +8,9 @@ class ComPortSettings : public PortSettings
     int baud_rate;
 
 public:
-    ComPortSettings() :
-        PortSettings("INVALID"),
-        baud_rate(9600)
-    { }
-
     ComPortSettings( QString name, int baud_rate ) :
         PortSettings(name),
         baud_rate(baud_rate)
-    { }
-
-    ComPortSettings( ComPortSettings &port ) :
-        PortSettings(port.getName()),
-        baud_rate(port.baud_rate)
     { }
 
     ComPortSettings &operator=( ComPortSettings &port );
@@ -30,7 +20,7 @@ public:
 
     PortPointer buildAccordingPort();
 
-    virtual QString getTypeName()
+    static QString getTypeName()
     {
         return QString("COM port");
     }
