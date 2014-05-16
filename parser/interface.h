@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "parser/algorithms/parser.h"
+#include "algorithms/parser.h"
 
 class ParserInterface
 {

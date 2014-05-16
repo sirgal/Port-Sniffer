@@ -32,3 +32,7 @@ HEADERS  += mainwindow.h \
     settingguiwireup.h
 
 FORMS    += mainwindow.ui
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build/build-parser-lib/release/ -llibparser
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build/build-parser-lib/debug/ -llibparser
+else:unix: LIBS += -L$$PWD/build/build-parser-lib/ -llibparser
