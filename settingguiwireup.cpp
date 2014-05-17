@@ -64,6 +64,10 @@ void SettingGuiWireup::onChannelChange( QString new_channel )
 
     QString type_name = settings->getTypeName();
     current = type_to_builder.value( type_name );
+
+    if( !current )
+        return;
+
     port_type_combobox->setCurrentText( type_name );
     current->setSettings( settings );
 

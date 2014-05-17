@@ -20,7 +20,7 @@ public:
 
     PortPointer buildAccordingPort();
 
-    static QString getTypeName()
+    virtual QString getTypeName()
     {
         return QString("COM port");
     }

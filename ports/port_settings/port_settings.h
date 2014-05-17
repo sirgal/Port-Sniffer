@@ -21,9 +21,9 @@ public:
     virtual ~PortSettings()
     { }
 
-    static QString getTypeName()
+    virtual QString getTypeName()
     {
-        return QString("LOL U FAILED!");
+        return QString("LOL U FAIL!");
     }
 
     QString getName();

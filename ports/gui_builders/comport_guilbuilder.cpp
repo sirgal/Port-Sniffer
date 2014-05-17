@@ -89,5 +89,5 @@ void ComPortGuiBuilder::buildForm(QFormLayout *layout)
 
 QString ComPortGuiBuilder::getTypeName()
 {
-    return ComPortSettings::getTypeName();
+    return ComPortSettings("temp", 0000).getTypeName();
 }

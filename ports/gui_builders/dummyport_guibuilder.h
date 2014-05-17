@@ -30,7 +30,7 @@ public:
     virtual void buildForm( QFormLayout *layout )
     { Q_UNUSED(layout); }
     virtual QString getTypeName()
-    { return DummyPortSettings::getTypeName(); }
+    { return DummyPortSettings().getTypeName(); }
 };
 
 #endif // DUMMYPORT_GUIBUILDER_H

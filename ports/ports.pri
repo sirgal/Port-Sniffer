@@ -6,7 +6,8 @@ SOURCES += \
     $$PWD/port_settings/port_settings.cpp \
     $$PWD/gui_builders/emulatedport_guibuilder.cpp \
     $$PWD/port_settings/dummyport_settings.cpp \
-    $$PWD/port_settings/emulatedport_settings.cpp
+    $$PWD/port_settings/emulatedport_settings.cpp \
+    ports/emulatedport.cpp
 
 HEADERS += \
     $$PWD/port_settings/comport_settings.h \

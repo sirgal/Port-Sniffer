@@ -9,7 +9,7 @@ EmulatedPortSettings &EmulatedPortSettings::operator=(EmulatedPortSettings &port
 
 PortPointer EmulatedPortSettings::buildAccordingPort()
 {
-    return std::dynamic_pointer_cast<Port>(std::make_shared<EmulatedPort>( *this ));
+    return std::dynamic_pointer_cast<Port>(std::make_shared<EmulatedPort>( *this, 1 ));
 }
 
 QString EmulatedPortSettings::getTypeName()
