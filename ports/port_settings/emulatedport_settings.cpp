@@ -16,3 +16,13 @@ QString EmulatedPortSettings::getTypeName()
 {
     return QString("Emulated port");
 }
+
+void EmulatedPortSettings::setFilePath( QString file_path )
+{
+    this->file_path = file_path;
+}
+
+QString EmulatedPortSettings::getFilePath()
+{
+    return file_path;
+}

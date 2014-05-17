@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QDebug>
+#include <QThread>
 
 #include "ports/port.h"
 #include "port_settings/emulatedport_settings.h"
@@ -16,12 +17,15 @@ public:
     using settings_type = EmulatedPortSettings;
     using gui_builder_type = EmulatedPortGuiBuilder;
 
-    class EmulatedPortFeeder
+    class EmulatedPortFeeder : public QThread
     {
         QMap<EmulatedPort*, int> port_to_num;
+        QMap<int, EmulatedPort*> num_to_port;
         int ready_count = 0;
+        bool running;
     public:
         EmulatedPortFeeder()
+            : QThread()
         { }
 
         void registerMe( int chan_num, EmulatedPort* who )
@@ -33,20 +37,47 @@ public:
         void deRegisterMe( EmulatedPort* who )
         {
             qDebug() << "De-Regged " << port_to_num.value(who);
-            port_to_num.take(who);
+            port_to_num.remove( who );
         }
 
         void imReady( EmulatedPort* who )
         {
+            if( !port_to_num.contains( who ) )
+                return;
+
             ready_count++;
+            // every registered port is ready?
+            // then start feeding
+            if( ready_count == port_to_num.count() ) {
+                // build reverse map
+                num_to_port.clear();
+                foreach( EmulatedPort* port, port_to_num.keys() ) {
+                    num_to_port[port_to_num.value(port)] = port;
+                }
+
+                start();
+            }
         }
 
         void imaStopping( EmulatedPort* who )
         {
+            if( !port_to_num.contains( who ) )
+                return;
+
             ready_count--;
+            running = false;
         }
 
-        void runLater();
+        void run()
+        {
+            // feeding procedure
+            running = true;
+            qDebug() << "BEING RUN";
+            while( running ) {
+                msleep( 1000 );
+            }
+            qDebug() << "STOPPED";
+        }
     };
 
 private:
@@ -77,12 +108,12 @@ public:
 
     virtual void enable()
     {
-
+        feeder.imReady(this);
     }
 
     virtual void disable()
     {
-
+        feeder.imaStopping(this);
     }
 
     virtual settings_type& getSettings()

@@ -16,7 +16,6 @@ HEADERS += \
     $$PWD/gui_builders/emulatedport_guibuilder.h \
     $$PWD/gui_builders/port_guibuilder.h \
     $$PWD/port_settings/port_settings.h \
-    $$PWD/gui_builders/guibuilder_factory.h \
     $$PWD/port_settings/dummyport_settings.h \
     $$PWD/dummyport.h \
     $$PWD/gui_builders/dummyport_guibuilder.h \

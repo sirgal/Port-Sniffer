@@ -273,6 +273,11 @@ void MainWindow::startSniffer()
     state = States::Sniffing;
     disableInterface();
 
+    // stimulate settings save by emitting signal
+    ui->channelList->currentTextChanged(
+                    ui->channelList->currentItem()->text()
+                );
+
     try {
         channel_factory->startAll();
     } catch( QString &error_string ) {
@@ -289,6 +294,8 @@ void MainWindow::stopSniffer()
     state = States::Intermission;
     enableInterface();
     channel_factory->stopAll();
+    drawer.setData( data_holder.getParsed() );
+    scrollData( 0 );
 }
 
 void MainWindow::stopRetrans()
