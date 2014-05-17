@@ -10,7 +10,7 @@ public:
         PortSettings("DUMMY")
     { }
 
-    PortPointer buildAccordingPort();
+    virtual PortPointer buildAccordingPort(int chan_num);
 
     virtual QString getTypeName()
     {

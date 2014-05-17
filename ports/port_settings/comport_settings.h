@@ -18,7 +18,7 @@ public:
     int getBaudRate() const;
     void setBaudRate(int value);
 
-    PortPointer buildAccordingPort();
+    virtual PortPointer buildAccordingPort(int chan_num);
 
     virtual QString getTypeName()
     {

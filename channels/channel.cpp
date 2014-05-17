@@ -24,7 +24,7 @@ PortSettingsPointer Channel::getPortSettings()
 void Channel::setPortSettings( PortSettingsPointer settings )
 {
     port_settings = settings;
-    active_port = port_settings->buildAccordingPort();
+    active_port = port_settings->buildAccordingPort(this->settings.getNumber());
 }
 
 void Channel::start()

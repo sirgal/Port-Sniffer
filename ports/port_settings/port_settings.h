@@ -30,7 +30,7 @@ public:
 
     void setName( const QString &value );
 
-    virtual PortPointer buildAccordingPort() = 0;
+    virtual PortPointer buildAccordingPort(int chan_num) = 0;
 };
 
 #endif // PORTSETTINGS_H

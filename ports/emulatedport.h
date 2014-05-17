@@ -27,12 +27,13 @@ public:
         void registerMe( int chan_num, EmulatedPort* who )
         {
             port_to_num[who] = chan_num;
-            qDebug() << "registeded";
+            qDebug() << "Regged " << chan_num;
         }
 
         void deRegisterMe( EmulatedPort* who )
         {
-            qDebug() << "deregisteded";
+            qDebug() << "De-Regged " << port_to_num.value(who);
+            port_to_num.take(who);
         }
 
         void imReady( EmulatedPort* who )
@@ -62,13 +63,11 @@ public slots:
     {
         emit gotByte(byte);
     }
-signals:
-    void gotByte(char byte);
 public:
-    EmulatedPort( settings_type settings, int number )
+    EmulatedPort( settings_type settings, int chan_num )
         : settings(settings)
     {
-        feeder.registerMe( number, this );
+        feeder.registerMe( chan_num, this );
     }
 
     ~EmulatedPort()

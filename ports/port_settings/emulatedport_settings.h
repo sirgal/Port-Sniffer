@@ -8,7 +8,7 @@ class EmulatedPortSettings : public PortSettings
 public:
     EmulatedPortSettings &operator=( EmulatedPortSettings &port );
 
-    PortPointer buildAccordingPort();
+    virtual PortPointer buildAccordingPort(int chan_num);
 
     virtual QString getTypeName();
 };

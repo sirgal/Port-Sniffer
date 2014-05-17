@@ -19,7 +19,8 @@ void ComPortSettings::setBaudRate(int value)
     baud_rate = value;
 }
 
-PortPointer ComPortSettings::buildAccordingPort()
+PortPointer ComPortSettings::buildAccordingPort(int chan_num)
 {
+    Q_UNUSED(chan_num);
     return std::dynamic_pointer_cast<Port>(std::make_shared<ComPort>( *this ));
 }
