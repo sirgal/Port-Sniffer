@@ -30,6 +30,9 @@ public:
 
     void setContainers( std::vector<std::shared_ptr<Container>> containers ) {
         this->containers = containers;
+        // not resetting may result in segfault
+        // because current_container may be != 0
+        reset();
     }
 
     ByteStatus passByte( int channel, char byte )
@@ -72,7 +75,7 @@ public:
 
     void setCycles( int cycles )
     {
-        cycles = cycles;
+        this->cycles = cycles;
         cycles_left = cycles;
     }
 };

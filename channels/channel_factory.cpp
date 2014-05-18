@@ -86,7 +86,7 @@ QColor ChannelFactory::getChannelColor(int chan_num)
     if( channel )
         return channel->getSettings().getColor();
     else
-        return Qt::black;
+        return Qt::gray;
 }
 
 void ChannelFactory::setChannelColor(int chan_num, QColor color)

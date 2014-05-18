@@ -80,13 +80,19 @@ MainWindow::MainWindow(QWidget *parent)
     connect( ui->parserSetReparseButt,SIGNAL(clicked()),         this, SLOT(setParserAndReparse()) );
     connect( ui->hideParseEditButt,   SIGNAL(clicked()),         this, SLOT(parseEditorClosed()) );
 
+    connect( &sorter, SIGNAL(gotByte(timestamped_data)), &data_holder, SLOT(receiveByte(timestamped_data)) );
+
     addTestData();
 
     ui->expandedParserCont->hide();
     ui->preprocessedParseEditLabel->hide();
     ui->preprocessedParseEdit->hide();
 
+    ui->portTypeComboBox->setEnabled( false );
+
     ui->channelColor->setAutoFillBackground( true );
+
+    setLabelColor( 0, ui->channelColor );
 
     scrollData( last_dx );
 
@@ -120,8 +126,10 @@ void MainWindow::addChannel()
     QString chan_name = QString::number(chan_num );
 
     ui->channelList->addItem( chan_name );
-    ui->channelList->setCurrentRow( ui->channelList->count()  );
+    ui->channelList->setCurrentRow( ui->channelList->count() - 1 );
     ui->channelList->currentTextChanged( chan_name );
+
+    ui->portTypeComboBox->setEnabled( true );
 }
 
 void MainWindow::deleteChannel()
@@ -136,8 +144,13 @@ void MainWindow::deleteChannel()
 
     channel_factory->removeChannel( chan_num );
     ui->channelList->model()->removeRow( row );
+
     deleted_channels.append( chan_num );
     qSort( deleted_channels );
+
+    // if no channels available - prevent port type change
+    if( ui->channelList->model()->rowCount() == 0 )
+        ui->portTypeComboBox->setEnabled( false );
 }
 
 void MainWindow::toggleChannel()
@@ -207,8 +220,11 @@ bool MainWindow::setParser()
 
 void MainWindow::setParserAndReparse()
 {
-    if( setParser() )
+    if( setParser() ) {
         data_holder.reparse();
+        drawer.setData( data_holder.getParsed() );
+        scrollData( last_dx );
+    }
 }
 
 void MainWindow::startSniffingButt()

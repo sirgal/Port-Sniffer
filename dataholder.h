@@ -39,7 +39,7 @@ public:
 
         foreach( timestamped_data data, unparsed ) {
             if( parser.nextByte( data.first.first, data.first.second ) ) {
-                parsed.append(data);
+                parsed.append( data );
             }
         }
     }
