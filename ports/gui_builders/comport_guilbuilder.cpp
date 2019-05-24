@@ -1,5 +1,19 @@
 #include "ports/gui_builders/comport_guilbuilder.h"
 
+namespace  {
+QStringList getAvailablePorts()
+{
+    QStringList string_list;
+
+    auto port_list = QSerialPortInfo::availablePorts();
+
+    foreach( QSerialPortInfo port, port_list )
+        string_list.append( port.portName() );
+
+    return string_list;
+}
+}
+
 ComPortGuiBuilder::ComPortGuiBuilder()
 {
     port_speeds.addItems( available_speeds );
@@ -44,17 +58,6 @@ int ComPortGuiBuilder::getSpeed()
 QString ComPortGuiBuilder::getName()
 {
     return port_name.currentText();
-}
-
-QStringList ComPortGuiBuilder::getAvailablePorts()
-{
-    QStringList string_list;
-    auto port_list = port_info.availablePorts();
-
-    foreach( QSerialPortInfo port, port_list )
-        string_list.append( port.portName() );
-
-    return string_list;
 }
 
 void ComPortGuiBuilder::rescanPorts()

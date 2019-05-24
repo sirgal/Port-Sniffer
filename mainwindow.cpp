@@ -1,6 +1,20 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+namespace  {
+QStringList getAvailablePorts()
+{
+    QStringList string_list;
+
+    auto port_list = QSerialPortInfo::availablePorts();
+
+    foreach( QSerialPortInfo port, port_list )
+        string_list.append( port.portName() );
+
+    return string_list;
+}
+}
+
 MainWindow::MainWindow(QWidget *parent)
     :
       QMainWindow(parent),
@@ -96,6 +110,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     scrollData( last_dx );
 
+    auto ports = getAvailablePorts();
+    ui->serialPort_1_Retr->insertItems( 0, ports );
+    ui->serialPort_2_Retr->insertItems( 0, ports );
+
+    const QStringList available_speeds =
+    {
+        "2400",  "4800",   "9600",   "14400",
+        "19200", "28800",  "38400",  "56000",
+        "57600", "115200", "128000", "256000"
+    };
+    ui->port_1_SpeedRetr->insertItems( 0, available_speeds );
+    ui->port_2_SpeedRetr->insertItems( 0, available_speeds );
 }
 
 MainWindow::~MainWindow()
@@ -259,32 +285,59 @@ void MainWindow::startRetranslatingButt()
 
 void MainWindow::startRetrans()
 {
+    clearData();
+
     state = States::Retranslating;
     disableInterface();
+
+    while(ui->channelList->currentItem() != nullptr) {
+        deleteChannel();
+    }
+
+    auto makeChannel = [this]{
+        int chan_num = deleted_channels.isEmpty() ? channels++ : deleted_channels.takeFirst();
+
+        auto channel = channel_factory->addChannel( chan_num );
+        channel->getSettings().niceRandomColor();
+
+        return channel;
+    };
+
+    auto first = makeChannel();
+    auto firstSettings = std::make_shared<ComPortSettings>(
+        ui->serialPort_1_Retr->currentText(),
+        ui->port_1_SpeedRetr->currentText().toInt()
+    );
+    first->setPortSettings(firstSettings);
+
+    auto second = makeChannel();
+    auto secondSettings = std::make_shared<ComPortSettings>(
+        ui->serialPort_2_Retr->currentText(),
+        ui->port_2_SpeedRetr->currentText().toInt()
+    );
+    second->setPortSettings(secondSettings);
+
+    connect(first.get(), &Channel::gotByte, this, [second]( char byte ){
+        second->putByte( byte );
+    });
+    connect(second.get(), &Channel::gotByte, this, [first]( char byte ){
+        first->putByte( byte );
+    });
+
+    try {
+        channel_factory->startAll();
+    } catch( QString &error_string ) {
+        QMessageBox::critical(
+                    this,
+                    "Failed to open port",
+                    QString("And that's why:\n") + error_string
+                    );
+    }
 }
 
 void MainWindow::startSniffer()
 {
-    if( !data_holder.isEmpty() ) {
-        QMessageBox::StandardButton choice = QMessageBox::question(
-                    this,
-                    "There's data there",
-                    "Overwrite current data?",
-                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
-                    );
-
-        switch( choice ) {
-        case QMessageBox::Yes:
-            data_holder.clear();
-            break;
-        case QMessageBox::No:
-            break;
-        case QMessageBox::Cancel:
-            return;
-        default:
-            return;
-        }
-    }
+    clearData();
 
     state = States::Sniffing;
     disableInterface();
@@ -317,7 +370,17 @@ void MainWindow::stopSniffer()
 void MainWindow::stopRetrans()
 {
     state = States::Intermission;
+
+    channel_factory->stopAll();
+
+    while(ui->channelList->currentItem() != nullptr) {
+        deleteChannel();
+    }
+
     enableInterface();
+
+    drawer.setData( data_holder.getParsed() );
+    scrollData( 0 );
 }
 
 void MainWindow::addTestData()
@@ -334,6 +397,30 @@ void MainWindow::addTestData()
     }
 
     drawer.setData( data_holder.getUnparsed() );
+}
+
+void MainWindow::clearData()
+{
+    if( !data_holder.isEmpty() ) {
+        QMessageBox::StandardButton choice = QMessageBox::question(
+                    this,
+                    "There's data there",
+                    "Overwrite current data?",
+                    QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
+                    );
+
+        switch( choice ) {
+        case QMessageBox::Yes:
+            data_holder.clear();
+            break;
+        case QMessageBox::No:
+            break;
+        case QMessageBox::Cancel:
+            return;
+        default:
+            return;
+        }
+    }
 }
 
 int MainWindow::getCurrentChanNum()

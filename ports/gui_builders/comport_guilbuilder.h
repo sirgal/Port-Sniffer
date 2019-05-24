@@ -26,11 +26,8 @@ class ComPortGuiBuilder : public PortGuiBuilder
     QPushButton rescan_button;
     QComboBox port_speeds;
 
-    QSerialPortInfo port_info;
-
     int getSpeed();
     QString getName();
-    QStringList getAvailablePorts();
 
 public slots:
     void rescanPorts();

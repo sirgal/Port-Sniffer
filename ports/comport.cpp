@@ -10,7 +10,7 @@ void ComPort::byteReady()
 
 void ComPort::putByte(char byte)
 {
-    emit gotByte( byte );
+    com_port.write(&byte, 1);
 }
 
 ComPort::ComPort(ComPort::settings_type settings) : settings(settings)
@@ -29,7 +29,7 @@ void ComPort::enable()
 {
     com_port.clear();
 
-    if( !com_port.open( QSerialPort::ReadOnly ) )
+    if( !com_port.open( QSerialPort::ReadWrite ) )
         throw com_port.errorString();
 }
 

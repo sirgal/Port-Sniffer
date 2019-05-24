@@ -15,6 +15,9 @@ class Channel : public QObject
     ChannelSettings settings;
 
 public slots:
+    void putByte( char byte );
+
+private slots:
     void byteReceived( char byte );
 
 signals:

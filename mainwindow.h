@@ -89,6 +89,7 @@ private:
     void stopRetrans();
 
     void addTestData();
+    void clearData();
 
     int getCurrentChanNum();
     void setLabelColor(int chan_num, QLabel *label);

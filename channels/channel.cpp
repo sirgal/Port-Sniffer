@@ -1,6 +1,11 @@
 #include "channels/channel.h"
 
 
+void Channel::putByte(char byte)
+{
+    active_port->putByte( byte );
+}
+
 void Channel::byteReceived(char byte)
 {
     emit gotByte(byte);
