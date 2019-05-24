@@ -51,7 +51,7 @@ void DrawData::changeFont( QFont in_font )
     font_rectangle = QRect( QFontMetrics(font).boundingRect( "00" ) );
 }
 
-void DrawData::setData( QList<timestamped_data> data )
+void DrawData::setData( const QList<timestamped_data>& data )
 {
     data_list = data;
 }

@@ -20,7 +20,7 @@ public:
     DrawData();
     ~DrawData();
 
-    void setData(QList<timestamped_data> data );
+    void setData(const QList<timestamped_data> &data );
     void appendData(const timestamped_data data );
 
     void changeFont(QFont in_font );

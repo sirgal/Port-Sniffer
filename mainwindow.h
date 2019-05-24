@@ -79,6 +79,8 @@ private:
     QList<int> deleted_channels;
     QList<PortGuiBuilderPointer> gui_builders;
 
+    std::chrono::time_point<std::chrono::steady_clock> lastRepaintTime;
+
     void disableInterface();
     void enableInterface();
 
@@ -93,6 +95,8 @@ private:
 
     int getCurrentChanNum();
     void setLabelColor(int chan_num, QLabel *label);
+
+    void repaintPlot();
 };
 
 #endif // MAINWINDOW_H

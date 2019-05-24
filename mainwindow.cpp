@@ -108,7 +108,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setLabelColor( 0, ui->channelColor );
 
-    scrollData( last_dx );
+    repaintPlot();
 
     auto ports = getAvailablePorts();
     ui->serialPort_1_Retr->insertItems( 0, ports );
@@ -131,6 +131,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::scrollData( int dx )
 {
+    auto now = std::chrono::steady_clock::now();
+
+    if(std::chrono::duration_cast<std::chrono::milliseconds>(now - lastRepaintTime).count() < (1000 / 30)) {
+        return;
+    }
+
+    lastRepaintTime = now;
+
     last_dx = dx;
     QPixmap *pixmap = new QPixmap( ui->label->size() );
     drawer.createImage( dx, pixmap );
@@ -140,7 +148,7 @@ void MainWindow::scrollData( int dx )
 
 void MainWindow::labelResized()
 {
-    scrollData(last_dx);
+    repaintPlot();
 }
 
 void MainWindow::addChannel()
@@ -190,7 +198,7 @@ void MainWindow::toggleChannel()
 
     channel_factory->setEnabledChannel( chan_num, is_enabled );
     drawer.setEnabledChannel( chan_num, is_enabled );
-    scrollData( last_dx );
+    repaintPlot();
 }
 
 void MainWindow::dummyParseLineEditClicked()
@@ -249,7 +257,7 @@ void MainWindow::setParserAndReparse()
     if( setParser() ) {
         data_holder.reparse();
         drawer.setData( data_holder.getParsed() );
-        scrollData( last_dx );
+        repaintPlot();
     }
 }
 
@@ -317,11 +325,15 @@ void MainWindow::startRetrans()
     );
     second->setPortSettings(secondSettings);
 
-    connect(first.get(), &Channel::gotByte, this, [second]( char byte ){
+    connect(first.get(), &Channel::gotByte, this, [this, second]( char byte ){
         second->putByte( byte );
+        drawer.setData( data_holder.getParsed() );
+        repaintPlot();
     });
-    connect(second.get(), &Channel::gotByte, this, [first]( char byte ){
+    connect(second.get(), &Channel::gotByte, this, [this, first]( char byte ){
         first->putByte( byte );
+        drawer.setData( data_holder.getParsed() );
+        repaintPlot();
     });
 
     try {
@@ -491,6 +503,11 @@ void MainWindow::setLabelColor( int chan_num, QLabel *label )
     label->setPalette( palette );
 }
 
+void MainWindow::repaintPlot()
+{
+    scrollData(last_dx);
+}
+
 void MainWindow::setChannelColor()
 {
     QColorDialog color_dialog( this );
@@ -508,5 +525,5 @@ void MainWindow::setChannelColor()
     channel_factory->setChannelColor( chan_num, next );
     setLabelColor( chan_num, ui->channelColor );
     drawer.setChannelColor( chan_num, next );
-    scrollData( last_dx );
+    repaintPlot();
 }
